@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SU President Timesheet Tracker - City of Wolverhampton College</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cwc-gold': '#D4AF37',
+                        'cwc-yellow': '#F4D03F',
+                        'cwc-navy': '#1A1A2E',
+                        'cwc-dark': '#16213E',
+                        'cwc-light': '#F8F9FA'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'pulse-success': 'pulseSuccess 0.6s ease-in-out',
+                        'bounce-in': 'bounceIn 0.5s ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes pulseSuccess {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass-effect {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            pointer-events: auto;
+        }
+        @media (max-width: 768px) {
+            .floating-btn {
+                bottom: 80px;
+            }
+        }
+        
+        /* Desktop improvements */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+            }
+            .touch-friendly {
+                min-height: auto;
+                padding: 8px 12px;
+            }
+        }
+        .timer-pulse {
+            animation: pulse 2s infinite;
+        }
+        .voice-recording {
+            animation: pulse 1s infinite;
+        }
+        /* Dark mode styles */
+        .dark {
+            background: #0f172a;
+            color: #f1f5f9;
+        }
+        .dark .bg-white { background-color: #1e293b; }
+        .dark .bg-gray-50 { background-color: #334155; }
+        .dark .bg-gray-100 { background-color: #475569; }
+        .dark .text-gray-700 { color: #cbd5e1; }
+        .dark .text-gray-600 { color: #94a3b8; }
+        .dark .text-gray-800 { color: #f1f5f9; }
+        .dark .border-gray-200 { border-color: #475569; }
+        .dark .border { border-color: #475569; }
+
+        /* Ensure all interactive elements are clickable */
+        button, input, textarea, select, .nav-tab, .mobile-nav {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            position: relative !important;
+            z-index: 10 !important;
+        }
+        input, textarea {
+            cursor: text !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-cwc-light to-gray-100 min-h-screen transition-all duration-300">
+    <!-- Header with College Branding -->
+    <header class="bg-gradient-to-r from-cwc-navy to-cwc-dark text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-cwc-gold rounded-lg flex items-center justify-center font-bold text-cwc-navy text-xl">
+                        W
+                    </div>
+                    <div>
+                        <h1 class="text-lg sm:text-xl font-bold">SU President Timesheet</h1>
+                        <p class="text-xs sm:text-sm text-cwc-yellow">City of Wolverhampton College</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="darkModeToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors">
+                        <span class="text-cwc-gold">🌙</span>
+                    </button>
+                    <button id="notificationToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors">
+                        <span class="text-cwc-gold">🔔</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-3 sm:px-4 py-6 max-w-7xl">
+        <!-- Navigation Tabs -->
+        <nav class="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-md p-2 animate-fade-in">
+            <div class="flex flex-wrap gap-2">
+                <button class="nav-tab active bg-cwc-gold text-cwc-navy px-4 py-2 rounded-md font-medium transition-all" data-view="dashboard">Dashboard</button>
+                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" data-view="activities">Activities</button>
+                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" data-view="analytics">Analytics</button>
+                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" data-view="calendar">Calendar</button>
+                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" data-view="timer">Timer</button>
+            </div>
+        </nav>
+
+        <!-- Dashboard View -->
+        <div id="dashboardView" class="view-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Progress Card -->
+                <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Monthly Progress</h2>
+                        <div id="hoursStatus" class="px-4 py-2 rounded-full text-sm font-medium"></div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-600 dark:text-gray-300">Total Hours</span>
+                                <span id="totalHours" class="text-3xl font-bold text-cwc-gold">0.00</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+                                <div id="progressBar" class="bg-gradient-to-r from-cwc-gold to-cwc-yellow h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                <span>0hrs</span>
+                                <span>30hrs (Required)</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div class="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600" id="helpDeskHours">0</div>
+                                <div class="text-xs text-blue-500">Help Desk</div>
+                            </div>
+                            <div class="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600" id="meetingHours">0</div>
+                                <div class="text-xs text-green-500">Meetings</div>
+                            </div>
+                            <div class="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600" id="eventHours">0</div>
+                                <div class="text-xs text-purple-500">Events</div>
+                            </div>
+                            <div class="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                                <div class="text-2xl font-bold text-orange-600" id="otherHours">0</div>
+                                <div class="text-xs text-orange-500">Other</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button class="quick-add-btn w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-3 rounded-lg font-medium transition-all transform hover:scale-105" data-activity="SU Help Desk">
+                            📞 Log Help Desk
+                        </button>
+                        <button class="quick-add-btn w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-3 rounded-lg font-medium transition-all transform hover:scale-105" data-activity="Meeting">
+                            🤝 Log Meeting
+                        </button>
+                        <button class="quick-add-btn w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white p-3 rounded-lg font-medium transition-all transform hover:scale-105" data-activity="Event">
+                            🎉 Log Event
+                        </button>
+                        <button id="startTimerBtn" class="w-full bg-gradient-to-r from-cwc-gold to-cwc-yellow text-cwc-navy p-3 rounded-lg font-medium transition-all transform hover:scale-105">
+                            ⏱️ Start Timer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Summary -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 animate-slide-up">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Monthly Summary</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">What went well this month and what challenges did you overcome?</label>
+                        <textarea id="monthlySummary" rows="4" 
+                            class="w-full p-4 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cwc-gold dark:bg-gray-700 dark:text-white transition-all" 
+                            placeholder="Describe your overall experience this month, highlighting successes and challenges..."></textarea>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="voiceNoteBtn" class="flex items-center space-x-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            <span>🎤</span>
+                            <span>Voice Note</span>
+                        </button>
+                        <button id="photoBtn" class="flex items-center space-x-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            <span>📷</span>
+                            <span>Add Photo</span>
+                        </button>
+                        <input type="file" id="photoInput" accept="image/*" class="hidden">
+                    </div>
+                    <div id="photoGallery" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities View -->
+        <div id="activitiesView" class="view-content hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white">Activity Log</h2>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-colors" data-hours="1">1hr</button>
+                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-colors" data-hours="2">2hrs</button>
+                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-colors" data-hours="3">3hrs</button>
+                        <button id="addRowButton" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Add Activity
+                        </button>
+                    </div>
+                </div>
+
+                <div id="timeLogContainer" class="space-y-4">
+                    <!-- Activity rows will be dynamically added here -->
+                </div>
+
+                <div class="mt-6 flex flex-wrap gap-2">
+                    <button id="clearButton" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        Clear All
+                    </button>
+                    <button id="generateButton" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        Generate Report
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics View -->
+        <div id="analyticsView" class="view-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Activity Breakdown</h3>
+                    <canvas id="activityChart" width="400" height="300"></canvas>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Weekly Progress</h3>
+                    <canvas id="weeklyChart" width="400" height="300"></canvas>
+                </div>
+                <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Monthly Trends</h3>
+                    <canvas id="trendsChart" width="800" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar View -->
+        <div id="calendarView" class="view-content hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white">Calendar View</h2>
+                    <div class="flex items-center space-x-2">
+                        <button id="prevMonth" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 transition-colors">←</button>
+                        <span id="currentMonth" class="px-4 py-2 font-medium"></span>
+                        <button id="nextMonth" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 transition-colors">→</button>
+                    </div>
+                </div>
+                <div id="calendar" class="grid grid-cols-7 gap-1 text-center">
+                    <!-- Calendar will be generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Timer View -->
+        <div id="timerView" class="view-content hidden">
+            <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Activity Timer</h2>
+                
+                <div class="mb-6">
+                    <input type="text" id="timerActivity" placeholder="Enter activity name..." class="w-full p-3 border rounded-lg text-center font-medium dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                </div>
+
+                <div id="timerDisplay" class="text-6xl font-mono font-bold text-cwc-gold mb-8">00:00:00</div>
+                
+                <div class="space-y-4">
+                    <button id="timerStartStop" class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105">
+                        START
+                    </button>
+                    <button id="timerPause" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white p-3 rounded-lg font-medium transition-all" disabled>
+                        PAUSE
+                    </button>
+                    <button id="timerSave" class="w-full bg-gradient-to-r from-cwc-gold to-cwc-yellow text-cwc-navy p-3 rounded-lg font-medium transition-all" disabled>
+                        SAVE ACTIVITY
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Box -->
+        <div id="messageBox" class="hidden fixed top-20 right-4 p-4 rounded-lg shadow-lg z-50 animate-bounce-in"></div>
+
+        <!-- Output Section -->
+        <div id="outputSection" class="hidden mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white">Monthly Report</h2>
+                <button id="copyButton" class="bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-4 py-2 rounded-lg font-medium transition-colors">
+                    Copy to Clipboard
+                </button>
+            </div>
+            <pre id="reportOutput" class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border text-sm overflow-x-auto whitespace-pre-wrap dark:text-gray-100"></pre>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button id="fabBtn" class="floating-btn bg-gradient-to-r from-cwc-gold to-cwc-yellow text-cwc-navy w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-xl font-bold hover:shadow-xl transition-all transform hover:scale-110">
+        +
+    </button>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t dark:border-gray-700 sm:hidden">
+        <div class="grid grid-cols-5 py-2">
+            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="dashboard">
+                <span class="text-lg mb-1">📊</span>
+                <span>Dashboard</span>
+            </button>
+            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="activities">
+                <span class="text-lg mb-1">📝</span>
+                <span>Activities</span>
+            </button>
+            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="analytics">
+                <span class="text-lg mb-1">📈</span>
+                <span>Analytics</span>
+            </button>
+            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="calendar">
+                <span class="text-lg mb-1">📅</span>
+                <span>Calendar</span>
+            </button>
+            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="timer">
+                <span class="text-lg mb-1">⏱️</span>
+                <span>Timer</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Voice Note Modal -->
+    <div id="voiceModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 m-4 max-w-sm w-full">
+            <h3 class="text-lg font-bold mb-4 dark:text-white">Voice Note</h3>
+            <div class="text-center">
+                <div id="voiceStatus" class="mb-4 text-gray-600 dark:text-gray-300">Press to start recording</div>
+                <button id="voiceRecordBtn" class="bg-red-500 hover:bg-red-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl transition-colors">
+                    🎤
+                </button>
+                <div class="mt-4 flex justify-end space-x-2">
+                    <button id="voiceCancelBtn" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded-lg">Cancel</button>
+                    <button id="voiceSaveBtn" class="px-4 py-2 bg-green-500 text-white rounded-lg" disabled>Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let appState = {
+            currentView: 'dashboard',
+            isDarkMode: localStorage.getItem('darkMode') === 'true',
+            timerInterval: null,
+            timerStartTime: null,
+            timerElapsed: 0,
+            isTimerRunning: false,
+            mediaRecorder: null,
+            audioChunks: [],
+            notificationsEnabled: localStorage.getItem('notifications') === 'true',
+            localEntries: {},
+            entryCounter: 1,
+            charts: {
+                activity: null,
+                weekly: null,
+                trends: null
+            }
+        };
+
+        // Initialize app when DOM is ready
+        function initializeApp() {
+            console.log('Initializing app...');
+            
+            // Apply dark mode immediately
+            if (appState.isDarkMode) {
+                document.documentElement.classList.add('dark');
+                const darkToggle = document.getElementById('darkModeToggle');
+                if (darkToggle) {
+                    darkToggle.innerHTML = '<span class="text-cwc-gold">☀️</span>';
+                }
+            }
+
+            // Update notification toggle
+            const notificationToggle = document.getElementById('notificationToggle');
+            if (appState.notificationsEnabled && notificationToggle) {
+                notificationToggle.classList.add('bg-cwc-gold');
+            }
+
+            // Initialize with dashboard view
+            showView('dashboard');
+            
+            // Add initial activity row
+            addInitialRow();
+            
+            // Load saved data
+            loadMonthlySummary();
+            
+            // Update displays
+            updateTotalHours();
+            updateHoursStatus();
+            updateQuickStats();
+            
+            console.log('App initialized successfully');
+        }
+
+        function setupEventListeners() {
+            console.log('Setting up event listeners...');
+            
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('click', toggleDarkMode);
+                console.log('Dark mode toggle attached');
+            }
+            
+            // Notification toggle
+            const notificationToggle = document.getElementById('notificationToggle');
+            if (notificationToggle) {
+                notificationToggle.addEventListener('click', toggleNotifications);
+                console.log('Notification toggle attached');
+            }
+
+            // Navigation tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const view = tab.dataset.view;
+                    console.log('Nav tab clicked:', view);
+                    showView(view);
+                });
+            });
+            console.log('Nav tabs attached:', navTabs.length);
+
+            // Mobile navigation
+            const mobileNavs = document.querySelectorAll('.mobile-nav');
+            mobileNavs.forEach(nav => {
+                nav.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const view = nav.dataset.view;
+                    console.log('Mobile nav clicked:', view);
+                    showView(view);
+                });
+            });
+            console.log('Mobile nav attached:', mobileNavs.length);
+
+            // Quick add buttons
+            const quickAddButtons = document.querySelectorAll('.quick-add-btn');
+            quickAddButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const activityName = button.dataset.activity;
+                    console.log('Quick add clicked:', activityName);
+                    addEntry({ activity: activityName });
+                    showMessage(`Added ${activityName} entry`, 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+                });
+            });
+            console.log('Quick add buttons attached:', quickAddButtons.length);
+
+            // Preset hours buttons
+            const presetButtons = document.querySelectorAll('.preset-btn');
+            presetButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const hours = parseInt(button.dataset.hours);
+                    console.log('Preset button clicked:', hours);
+                    const now = new Date();
+                    const endTime = now.toTimeString().slice(0, 5);
+                    const startTime = new Date(now.getTime() - (hours * 60 * 60 * 1000)).toTimeString().slice(0, 5);
+                    
+                    addEntry({ 
+                        startTime: startTime, 
+                        endTime: endTime,
+                        activity: 'SU Help Desk'
+                    });
+                    showMessage(`Added ${hours}hr activity`, 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300');
+                });
+            });
+            console.log
