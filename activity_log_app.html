@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SU President Timesheet Tracker - City of Wolverhampton College</title>
+    <title>SUtimetracker - City of Wolverhampton College</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
@@ -292,6 +292,10 @@
         }
     </style>
     <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="/icons/app-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#D4AF37">
 </head>
 <body class="bg-gradient-to-br from-cwc-light to-gray-100 min-h-screen transition-all duration-300">
@@ -300,11 +304,11 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 bg-cwc-gold rounded-lg flex items-center justify-center font-bold text-cwc-navy text-xl">
-                        W
+                    <div class="w-12 h-12 rounded-xl bg-cwc-gold flex items-center justify-center">
+                        <img src="/icons/app-icon.svg" alt="SUtimetracker" class="w-10 h-10" />
                     </div>
                     <div>
-                        <h1 class="text-lg sm:text-xl font-bold">SU President Timesheet</h1>
+                        <h1 class="text-lg sm:text-xl font-bold">SUtimetracker</h1>
                         <p class="text-xs sm:text-sm text-cwc-yellow">City of Wolverhampton College</p>
                     </div>
                 </div>
