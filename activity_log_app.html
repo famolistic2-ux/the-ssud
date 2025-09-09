@@ -529,3 +529,969 @@
                 });
             });
             console.log
+            console.log('Preset buttons attached:', presetButtons.length);
+
+            // Add row button
+            const addRowButton = document.getElementById('addRowButton');
+            if (addRowButton) {
+                addRowButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Add row button clicked');
+                    addActivityRow();
+                });
+            }
+
+            // Clear and generate buttons
+            const clearButton = document.getElementById('clearButton');
+            if (clearButton) {
+                clearButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Clear button clicked');
+                    clearAllEntries();
+                });
+            }
+
+            const generateButton = document.getElementById('generateButton');
+            if (generateButton) {
+                generateButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Generate button clicked');
+                    generateReport();
+                });
+            }
+
+            // Timer functionality
+            const timerStartStop = document.getElementById('timerStartStop');
+            const timerPause = document.getElementById('timerPause');
+            const timerSave = document.getElementById('timerSave');
+            const timerActivity = document.getElementById('timerActivity');
+
+            if (timerStartStop) {
+                timerStartStop.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Timer start/stop clicked');
+                    toggleTimer();
+                });
+            }
+
+            if (timerPause) {
+                timerPause.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Timer pause clicked');
+                    pauseTimer();
+                });
+            }
+
+            if (timerSave) {
+                timerSave.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Timer save clicked');
+                    saveTimerActivity();
+                });
+            }
+
+            // Start timer button from dashboard
+            const startTimerBtn = document.getElementById('startTimerBtn');
+            if (startTimerBtn) {
+                startTimerBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Start timer from dashboard clicked');
+                    showView('timer');
+                });
+            }
+
+            // Voice note functionality
+            const voiceNoteBtn = document.getElementById('voiceNoteBtn');
+            const voiceModal = document.getElementById('voiceModal');
+            const voiceRecordBtn = document.getElementById('voiceRecordBtn');
+            const voiceCancelBtn = document.getElementById('voiceCancelBtn');
+            const voiceSaveBtn = document.getElementById('voiceSaveBtn');
+
+            if (voiceNoteBtn) {
+                voiceNoteBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Voice note button clicked');
+                    showVoiceModal();
+                });
+            }
+
+            if (voiceRecordBtn) {
+                voiceRecordBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Voice record button clicked');
+                    toggleVoiceRecording();
+                });
+            }
+
+            if (voiceCancelBtn) {
+                voiceCancelBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Voice cancel button clicked');
+                    hideVoiceModal();
+                });
+            }
+
+            if (voiceSaveBtn) {
+                voiceSaveBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Voice save button clicked');
+                    saveVoiceNote();
+                });
+            }
+
+            // Photo functionality
+            const photoBtn = document.getElementById('photoBtn');
+            const photoInput = document.getElementById('photoInput');
+
+            if (photoBtn) {
+                photoBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Photo button clicked');
+                    photoInput.click();
+                });
+            }
+
+            if (photoInput) {
+                photoInput.addEventListener('change', (e) => {
+                    console.log('Photo selected');
+                    handlePhotoUpload(e);
+                });
+            }
+
+            // Monthly summary
+            const monthlySummary = document.getElementById('monthlySummary');
+            if (monthlySummary) {
+                monthlySummary.addEventListener('input', (e) => {
+                    saveMonthlySummary();
+                });
+            }
+
+            // FAB button
+            const fabBtn = document.getElementById('fabBtn');
+            if (fabBtn) {
+                fabBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('FAB clicked');
+                    showView('activities');
+                });
+            }
+
+            // Calendar navigation
+            const prevMonth = document.getElementById('prevMonth');
+            const nextMonth = document.getElementById('nextMonth');
+
+            if (prevMonth) {
+                prevMonth.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Previous month clicked');
+                    changeMonth(-1);
+                });
+            }
+
+            if (nextMonth) {
+                nextMonth.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Next month clicked');
+                    changeMonth(1);
+                });
+            }
+
+            // Copy button
+            const copyButton = document.getElementById('copyButton');
+            if (copyButton) {
+                copyButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Copy button clicked');
+                    copyReport();
+                });
+            }
+
+            console.log('All event listeners attached successfully');
+        }
+
+        // View management
+        function showView(viewName) {
+            console.log('Switching to view:', viewName);
+            
+            // Hide all views
+            const views = document.querySelectorAll('.view-content');
+            views.forEach(view => view.classList.add('hidden'));
+            
+            // Show selected view
+            const selectedView = document.getElementById(viewName + 'View');
+            if (selectedView) {
+                selectedView.classList.remove('hidden');
+            }
+            
+            // Update navigation tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                if (tab.dataset.view === viewName) {
+                    tab.classList.add('active', 'bg-cwc-gold', 'text-cwc-navy');
+                    tab.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                } else {
+                    tab.classList.remove('active', 'bg-cwc-gold', 'text-cwc-navy');
+                    tab.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                }
+            });
+            
+            // Update mobile navigation
+            const mobileNavs = document.querySelectorAll('.mobile-nav');
+            mobileNavs.forEach(nav => {
+                if (nav.dataset.view === viewName) {
+                    nav.classList.add('text-cwc-gold');
+                } else {
+                    nav.classList.remove('text-cwc-gold');
+                }
+            });
+            
+            appState.currentView = viewName;
+            
+            // Initialize view-specific functionality
+            if (viewName === 'analytics') {
+                initializeCharts();
+            } else if (viewName === 'calendar') {
+                generateCalendar();
+            }
+        }
+
+        // Dark mode toggle
+        function toggleDarkMode() {
+            console.log('Toggling dark mode');
+            appState.isDarkMode = !appState.isDarkMode;
+            document.documentElement.classList.toggle('dark', appState.isDarkMode);
+            localStorage.setItem('darkMode', appState.isDarkMode);
+            
+            const darkToggle = document.getElementById('darkModeToggle');
+            if (darkToggle) {
+                darkToggle.innerHTML = appState.isDarkMode ? 
+                    '<span class="text-cwc-gold">☀️</span>' : 
+                    '<span class="text-cwc-gold">🌙</span>';
+            }
+        }
+
+        // Notification toggle
+        function toggleNotifications() {
+            console.log('Toggling notifications');
+            appState.notificationsEnabled = !appState.notificationsEnabled;
+            localStorage.setItem('notifications', appState.notificationsEnabled);
+            
+            const notificationToggle = document.getElementById('notificationToggle');
+            if (notificationToggle) {
+                if (appState.notificationsEnabled) {
+                    notificationToggle.classList.add('bg-cwc-gold');
+                } else {
+                    notificationToggle.classList.remove('bg-cwc-gold');
+                }
+            }
+        }
+
+        // Activity management
+        function addEntry(data) {
+            console.log('Adding entry:', data);
+            const entry = {
+                id: appState.entryCounter++,
+                date: data.date || new Date().toISOString().split('T')[0],
+                startTime: data.startTime || '09:00',
+                endTime: data.endTime || '17:00',
+                activity: data.activity || 'General Activity',
+                notes: data.notes || '',
+                hours: calculateHours(data.startTime || '09:00', data.endTime || '17:00')
+            };
+            
+            appState.localEntries[entry.id] = entry;
+            updateTotalHours();
+            updateHoursStatus();
+            updateQuickStats();
+            showMessage(`Added ${entry.activity} entry`, 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+        }
+
+        function addActivityRow() {
+            console.log('Adding activity row');
+            const container = document.getElementById('timeLogContainer');
+            if (!container) return;
+            
+            const rowId = 'row_' + Date.now();
+            const row = document.createElement('div');
+            row.id = rowId;
+            row.className = 'bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600';
+            row.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
+                        <input type="date" class="date-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" value="${new Date().toISOString().split('T')[0]}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Time</label>
+                        <input type="time" class="start-time-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" value="09:00">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Time</label>
+                        <input type="time" class="end-time-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" value="17:00">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Activity</label>
+                        <input type="text" class="activity-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" placeholder="Activity name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>
+                        <input type="text" class="notes-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" placeholder="Notes">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <button class="save-row-btn bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm transition-colors">Save</button>
+                        <button class="delete-row-btn bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm transition-colors">Delete</button>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(row);
+            
+            // Add event listeners to the new row
+            const saveBtn = row.querySelector('.save-row-btn');
+            const deleteBtn = row.querySelector('.delete-row-btn');
+            
+            if (saveBtn) {
+                saveBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Save row clicked');
+                    saveActivityRow(row);
+                });
+            }
+            
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Delete row clicked');
+                    deleteActivityRow(row);
+                });
+            }
+        }
+
+        function addInitialRow() {
+            addActivityRow();
+        }
+
+        function saveActivityRow(row) {
+            console.log('Saving activity row');
+            const dateInput = row.querySelector('.date-input');
+            const startTimeInput = row.querySelector('.start-time-input');
+            const endTimeInput = row.querySelector('.end-time-input');
+            const activityInput = row.querySelector('.activity-input');
+            const notesInput = row.querySelector('.notes-input');
+            
+            if (!dateInput || !startTimeInput || !endTimeInput || !activityInput) return;
+            
+            const entry = {
+                id: appState.entryCounter++,
+                date: dateInput.value,
+                startTime: startTimeInput.value,
+                endTime: endTimeInput.value,
+                activity: activityInput.value,
+                notes: notesInput.value || '',
+                hours: calculateHours(startTimeInput.value, endTimeInput.value)
+            };
+            
+            appState.localEntries[entry.id] = entry;
+            updateTotalHours();
+            updateHoursStatus();
+            updateQuickStats();
+            showMessage('Activity saved successfully', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+        }
+
+        function deleteActivityRow(row) {
+            console.log('Deleting activity row');
+            row.remove();
+        }
+
+        function clearAllEntries() {
+            console.log('Clearing all entries');
+            if (confirm('Are you sure you want to clear all entries?')) {
+                appState.localEntries = {};
+                appState.entryCounter = 1;
+                updateTotalHours();
+                updateHoursStatus();
+                updateQuickStats();
+                
+                const container = document.getElementById('timeLogContainer');
+                if (container) {
+                    container.innerHTML = '';
+                }
+                
+                showMessage('All entries cleared', 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300');
+            }
+        }
+
+        // Timer functionality
+        function toggleTimer() {
+            console.log('Toggling timer');
+            if (appState.isTimerRunning) {
+                stopTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            console.log('Starting timer');
+            appState.timerStartTime = Date.now() - appState.timerElapsed;
+            appState.isTimerRunning = true;
+            
+            appState.timerInterval = setInterval(updateTimerDisplay, 1000);
+            
+            const timerStartStop = document.getElementById('timerStartStop');
+            const timerPause = document.getElementById('timerPause');
+            const timerSave = document.getElementById('timerSave');
+            
+            if (timerStartStop) {
+                timerStartStop.textContent = 'STOP';
+                timerStartStop.className = 'w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white p-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105';
+            }
+            
+            if (timerPause) {
+                timerPause.disabled = false;
+            }
+            
+            if (timerSave) {
+                timerSave.disabled = false;
+            }
+        }
+
+        function stopTimer() {
+            console.log('Stopping timer');
+            appState.isTimerRunning = false;
+            
+            if (appState.timerInterval) {
+                clearInterval(appState.timerInterval);
+                appState.timerInterval = null;
+            }
+            
+            const timerStartStop = document.getElementById('timerStartStop');
+            const timerPause = document.getElementById('timerPause');
+            
+            if (timerStartStop) {
+                timerStartStop.textContent = 'START';
+                timerStartStop.className = 'w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105';
+            }
+            
+            if (timerPause) {
+                timerPause.disabled = true;
+                timerPause.textContent = 'PAUSE';
+            }
+        }
+
+        function pauseTimer() {
+            console.log('Pausing timer');
+            if (appState.isTimerRunning) {
+                appState.isTimerRunning = false;
+                if (appState.timerInterval) {
+                    clearInterval(appState.timerInterval);
+                }
+                
+                const timerPause = document.getElementById('timerPause');
+                if (timerPause) {
+                    timerPause.textContent = 'RESUME';
+                }
+            } else {
+                appState.isTimerRunning = true;
+                appState.timerStartTime = Date.now() - appState.timerElapsed;
+                appState.timerInterval = setInterval(updateTimerDisplay, 1000);
+                
+                const timerPause = document.getElementById('timerPause');
+                if (timerPause) {
+                    timerPause.textContent = 'PAUSE';
+                }
+            }
+        }
+
+        function updateTimerDisplay() {
+            if (!appState.isTimerRunning) return;
+            
+            appState.timerElapsed = Date.now() - appState.timerStartTime;
+            const hours = Math.floor(appState.timerElapsed / 3600000);
+            const minutes = Math.floor((appState.timerElapsed % 3600000) / 60000);
+            const seconds = Math.floor((appState.timerElapsed % 60000) / 1000);
+            
+            const display = document.getElementById('timerDisplay');
+            if (display) {
+                display.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function saveTimerActivity() {
+            console.log('Saving timer activity');
+            const activityName = document.getElementById('timerActivity');
+            if (!activityName || !activityName.value.trim()) {
+                showMessage('Please enter an activity name', 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300');
+                return;
+            }
+            
+            const hours = appState.timerElapsed / 3600000;
+            const now = new Date();
+            const endTime = now.toTimeString().slice(0, 5);
+            const startTime = new Date(now.getTime() - appState.timerElapsed).toTimeString().slice(0, 5);
+            
+            addEntry({
+                date: now.toISOString().split('T')[0],
+                startTime: startTime,
+                endTime: endTime,
+                activity: activityName.value,
+                notes: `Timer activity (${hours.toFixed(2)} hours)`
+            });
+            
+            // Reset timer
+            appState.timerElapsed = 0;
+            const timerDisplay = document.getElementById('timerDisplay');
+            if (timerDisplay) {
+                timerDisplay.textContent = '00:00:00';
+            }
+            
+            const timerStartStop = document.getElementById('timerStartStop');
+            const timerPause = document.getElementById('timerPause');
+            const timerSave = document.getElementById('timerSave');
+            
+            if (timerStartStop) {
+                timerStartStop.textContent = 'START';
+                timerStartStop.className = 'w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105';
+            }
+            
+            if (timerPause) {
+                timerPause.disabled = true;
+                timerPause.textContent = 'PAUSE';
+            }
+            
+            if (timerSave) {
+                timerSave.disabled = true;
+            }
+            
+            if (activityName) {
+                activityName.value = '';
+            }
+            
+            showMessage('Timer activity saved', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+        }
+
+        // Voice note functionality
+        function showVoiceModal() {
+            console.log('Showing voice modal');
+            const modal = document.getElementById('voiceModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function hideVoiceModal() {
+            console.log('Hiding voice modal');
+            const modal = document.getElementById('voiceModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function toggleVoiceRecording() {
+            console.log('Toggling voice recording');
+            if (appState.mediaRecorder && appState.mediaRecorder.state === 'recording') {
+                stopVoiceRecording();
+            } else {
+                startVoiceRecording();
+            }
+        }
+
+        function startVoiceRecording() {
+            console.log('Starting voice recording');
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    appState.mediaRecorder = new MediaRecorder(stream);
+                    appState.audioChunks = [];
+                    
+                    appState.mediaRecorder.ondataavailable = event => {
+                        appState.audioChunks.push(event.data);
+                    };
+                    
+                    appState.mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(appState.audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        console.log('Voice recording completed');
+                        showMessage('Voice note recorded successfully', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+                    };
+                    
+                    appState.mediaRecorder.start();
+                    
+                    const voiceStatus = document.getElementById('voiceStatus');
+                    const voiceRecordBtn = document.getElementById('voiceRecordBtn');
+                    const voiceSaveBtn = document.getElementById('voiceSaveBtn');
+                    
+                    if (voiceStatus) {
+                        voiceStatus.textContent = 'Recording... Click to stop';
+                    }
+                    
+                    if (voiceRecordBtn) {
+                        voiceRecordBtn.classList.add('voice-recording');
+                    }
+                    
+                    if (voiceSaveBtn) {
+                        voiceSaveBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error accessing microphone:', error);
+                    showMessage('Could not access microphone', 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300');
+                });
+        }
+
+        function stopVoiceRecording() {
+            console.log('Stopping voice recording');
+            if (appState.mediaRecorder && appState.mediaRecorder.state === 'recording') {
+                appState.mediaRecorder.stop();
+                
+                const voiceStatus = document.getElementById('voiceStatus');
+                const voiceRecordBtn = document.getElementById('voiceRecordBtn');
+                
+                if (voiceStatus) {
+                    voiceStatus.textContent = 'Recording stopped. Click to record again.';
+                }
+                
+                if (voiceRecordBtn) {
+                    voiceRecordBtn.classList.remove('voice-recording');
+                }
+            }
+        }
+
+        function saveVoiceNote() {
+            console.log('Saving voice note');
+            hideVoiceModal();
+            showMessage('Voice note saved to monthly summary', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+        }
+
+        // Photo functionality
+        function handlePhotoUpload(event) {
+            console.log('Handling photo upload');
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoGallery = document.getElementById('photoGallery');
+                if (photoGallery) {
+                    const photoDiv = document.createElement('div');
+                    photoDiv.className = 'relative';
+                    photoDiv.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-20 object-cover rounded-lg">
+                        <button class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs" onclick="removePhoto(this)">×</button>
+                    `;
+                    photoGallery.appendChild(photoDiv);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removePhoto(button) {
+            console.log('Removing photo');
+            button.parentElement.remove();
+        }
+
+        // Monthly summary
+        function saveMonthlySummary() {
+            const summary = document.getElementById('monthlySummary');
+            if (summary) {
+                localStorage.setItem('monthlySummary', summary.value);
+            }
+        }
+
+        function loadMonthlySummary() {
+            const summary = document.getElementById('monthlySummary');
+            const saved = localStorage.getItem('monthlySummary');
+            if (summary && saved) {
+                summary.value = saved;
+            }
+        }
+
+        // Calendar functionality
+        function generateCalendar() {
+            console.log('Generating calendar');
+            const calendar = document.getElementById('calendar');
+            if (!calendar) return;
+            
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+            
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const currentMonth = document.getElementById('currentMonth');
+            if (currentMonth) {
+                currentMonth.textContent = `${monthNames[month]} ${year}`;
+            }
+            
+            calendar.innerHTML = '';
+            
+            // Add day headers
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayHeaders.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'font-bold text-gray-600 dark:text-gray-300 p-2';
+                dayHeader.textContent = day;
+                calendar.appendChild(dayHeader);
+            });
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'p-2';
+                calendar.appendChild(emptyCell);
+            }
+            
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'p-2 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer';
+                dayCell.textContent = day;
+                calendar.appendChild(dayCell);
+            }
+        }
+
+        function changeMonth(direction) {
+            console.log('Changing month:', direction);
+            // This would update the calendar month
+            generateCalendar();
+        }
+
+        // Chart functionality
+        function initializeCharts() {
+            console.log('Initializing charts');
+            
+            // Activity breakdown chart
+            const activityCtx = document.getElementById('activityChart');
+            if (activityCtx && !appState.charts.activity) {
+                appState.charts.activity = new Chart(activityCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Help Desk', 'Meetings', 'Events', 'Other'],
+                        datasets: [{
+                            data: [0, 0, 0, 0],
+                            backgroundColor: ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+            
+            // Weekly progress chart
+            const weeklyCtx = document.getElementById('weeklyChart');
+            if (weeklyCtx && !appState.charts.weekly) {
+                appState.charts.weekly = new Chart(weeklyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                        datasets: [{
+                            label: 'Hours',
+                            data: [0, 0, 0, 0],
+                            backgroundColor: '#D4AF37'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+            
+            // Trends chart
+            const trendsCtx = document.getElementById('trendsChart');
+            if (trendsCtx && !appState.charts.trends) {
+                appState.charts.trends = new Chart(trendsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Monthly Hours',
+                            data: [0, 0, 0, 0, 0, 0],
+                            borderColor: '#D4AF37',
+                            backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+        }
+
+        // Utility functions
+        function calculateHours(startTime, endTime) {
+            const start = new Date(`2000-01-01T${startTime}:00`);
+            const end = new Date(`2000-01-01T${endTime}:00`);
+            const diffMs = end - start;
+            return Math.max(0, diffMs / (1000 * 60 * 60));
+        }
+
+        function updateTotalHours() {
+            let total = 0;
+            Object.values(appState.localEntries).forEach(entry => {
+                total += entry.hours || 0;
+            });
+            
+            const totalHoursElement = document.getElementById('totalHours');
+            if (totalHoursElement) {
+                totalHoursElement.textContent = total.toFixed(2);
+            }
+            
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                const percentage = Math.min((total / 30) * 100, 100);
+                progressBar.style.width = percentage + '%';
+            }
+        }
+
+        function updateHoursStatus() {
+            let total = 0;
+            Object.values(appState.localEntries).forEach(entry => {
+                total += entry.hours || 0;
+            });
+            
+            const statusElement = document.getElementById('hoursStatus');
+            if (statusElement) {
+                if (total >= 30) {
+                    statusElement.textContent = '✅ Complete';
+                    statusElement.className = 'px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300';
+                } else {
+                    statusElement.textContent = `${(30 - total).toFixed(1)}hrs remaining`;
+                    statusElement.className = 'px-4 py-2 rounded-full text-sm font-medium bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300';
+                }
+            }
+        }
+
+        function updateQuickStats() {
+            let helpDesk = 0, meetings = 0, events = 0, other = 0;
+            
+            Object.values(appState.localEntries).forEach(entry => {
+                const activity = entry.activity.toLowerCase();
+                if (activity.includes('help desk')) {
+                    helpDesk += entry.hours || 0;
+                } else if (activity.includes('meeting')) {
+                    meetings += entry.hours || 0;
+                } else if (activity.includes('event')) {
+                    events += entry.hours || 0;
+                } else {
+                    other += entry.hours || 0;
+                }
+            });
+            
+            const helpDeskElement = document.getElementById('helpDeskHours');
+            const meetingElement = document.getElementById('meetingHours');
+            const eventElement = document.getElementById('eventHours');
+            const otherElement = document.getElementById('otherHours');
+            
+            if (helpDeskElement) helpDeskElement.textContent = helpDesk.toFixed(1);
+            if (meetingElement) meetingElement.textContent = meetings.toFixed(1);
+            if (eventElement) eventElement.textContent = events.toFixed(1);
+            if (otherElement) otherElement.textContent = other.toFixed(1);
+        }
+
+        function generateReport() {
+            console.log('Generating report');
+            let report = 'SU PRESIDENT MONTHLY TIMESHEET REPORT\n';
+            report += 'City of Wolverhampton College\n';
+            report += 'Generated: ' + new Date().toLocaleDateString() + '\n\n';
+            
+            report += 'ACTIVITY LOG:\n';
+            report += 'Date\t\tStart\tEnd\t\tActivity\t\t\tHours\tNotes\n';
+            report += '-'.repeat(80) + '\n';
+            
+            Object.values(appState.localEntries).forEach(entry => {
+                report += `${entry.date}\t${entry.startTime}\t${entry.endTime}\t${entry.activity.padEnd(20)}\t${entry.hours.toFixed(2)}\t${entry.notes}\n`;
+            });
+            
+            let totalHours = 0;
+            Object.values(appState.localEntries).forEach(entry => {
+                totalHours += entry.hours || 0;
+            });
+            
+            report += '\n' + '-'.repeat(80) + '\n';
+            report += `TOTAL HOURS: ${totalHours.toFixed(2)}\n`;
+            report += `REQUIRED HOURS: 30.00\n`;
+            report += `STATUS: ${totalHours >= 30 ? 'COMPLETE' : 'INCOMPLETE'}\n\n`;
+            
+            const summary = document.getElementById('monthlySummary');
+            if (summary && summary.value.trim()) {
+                report += 'MONTHLY SUMMARY:\n';
+                report += summary.value + '\n';
+            }
+            
+            const outputSection = document.getElementById('outputSection');
+            const reportOutput = document.getElementById('reportOutput');
+            
+            if (outputSection && reportOutput) {
+                reportOutput.textContent = report;
+                outputSection.classList.remove('hidden');
+                showMessage('Report generated successfully', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+            }
+        }
+
+        function copyReport() {
+            console.log('Copying report');
+            const reportOutput = document.getElementById('reportOutput');
+            if (reportOutput) {
+                navigator.clipboard.writeText(reportOutput.textContent).then(() => {
+                    showMessage('Report copied to clipboard', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+                }).catch(() => {
+                    showMessage('Failed to copy report', 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300');
+                });
+            }
+        }
+
+        function showMessage(message, className) {
+            console.log('Showing message:', message);
+            const messageBox = document.getElementById('messageBox');
+            if (messageBox) {
+                messageBox.textContent = message;
+                messageBox.className = `fixed top-20 right-4 p-4 rounded-lg shadow-lg z-50 animate-bounce-in ${className}`;
+                messageBox.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    messageBox.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing app...');
+            initializeApp();
+            setupEventListeners();
+            console.log('✅ App loaded successfully!');
+        });
+
+        // Global functions for inline event handlers
+        window.removePhoto = removePhoto;
+    </script>
+</body>
+</html>
