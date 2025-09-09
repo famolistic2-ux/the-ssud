@@ -291,6 +291,17 @@
             cursor: text !important;
         }
     </style>
+    <style>
+        /* Print styles */
+        @media print {
+            header, nav, #fabBtn, .mobile-nav, #messageBox, #installBanner, #shortcutsModal, #voiceModal { display: none !important; }
+            body { background: #fff; }
+            .container, .max-w-7xl, .rounded-xl, .shadow-lg { box-shadow: none !important; }
+            button { display: none !important; }
+            #outputSection { display: block !important; border: none !important; }
+            #reportOutput { font-size: 12px; color: #000; background: #fff !important; border: none !important; }
+        }
+    </style>
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" href="/icons/app-icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
@@ -342,6 +353,20 @@
         <!-- Dashboard View -->
         <div id="dashboardView" class="view-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Install Card -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="/icons/app-icon.svg" alt="SUTimeTracker" class="w-10 h-10" />
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">Install SUTimeTracker</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Faster access, offline support</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <button id="dashboardInstallBtn" aria-label="Install app" class="flex-1 bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-4 py-2 rounded-lg font-medium transition-colors">Install App</button>
+                        <button id="iosInstallTipBtn" aria-label="How to install on iOS" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 px-4 py-2 rounded-lg font-medium transition-colors">Install on iOS</button>
+                    </div>
+                </div>
                 <!-- Progress Card -->
                 <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up card-hover">
                     <div class="flex items-center justify-between mb-6">
@@ -598,9 +623,10 @@
         <div id="outputSection" class="hidden mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3">
                 <h2 class="text-xl font-bold text-gray-800 dark:text-white">Monthly Report</h2>
-                <button id="copyButton" class="bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-4 py-2 rounded-lg font-medium transition-colors">
-                    Copy to Clipboard
-                </button>
+                <div class="flex gap-2">
+                    <button id="csvButton" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">Export CSV</button>
+                    <button id="copyButton" class="bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-4 py-2 rounded-lg font-medium transition-colors">Copy to Clipboard</button>
+                </div>
             </div>
             <pre id="reportOutput" class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border text-sm overflow-x-auto whitespace-pre-wrap dark:text-gray-100"></pre>
         </div>
@@ -750,6 +776,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- iOS Install Tip Modal -->
+    <div id="iosTipModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 m-4 max-w-sm w-full">
+            <h3 class="text-lg font-bold mb-3 dark:text-white">Install on iOS</h3>
+            <ol class="list-decimal ml-5 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <li>Open in Safari</li>
+                <li>Tap the Share icon</li>
+                <li>Select “Add to Home Screen”</li>
+            </ol>
+            <div class="mt-4 flex justify-end">
+                <button id="iosTipClose" class="px-4 py-2 bg-cwc-gold text-cwc-navy rounded">Got it</button>
             </div>
         </div>
     </div>
@@ -1135,6 +1176,43 @@
                     e.stopPropagation();
                     console.log('Copy button clicked');
                     copyReport();
+                });
+            }
+            const csvButton = document.getElementById('csvButton');
+            if (csvButton) {
+                csvButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    exportCSV();
+                });
+            }
+
+            // Dashboard install card
+            const dashboardInstallBtn = document.getElementById('dashboardInstallBtn');
+            const iosInstallTipBtn = document.getElementById('iosInstallTipBtn');
+            if (dashboardInstallBtn) {
+                dashboardInstallBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Reuse install banner logic
+                    const bannerInstall = document.getElementById('installBtn');
+                    if (bannerInstall) bannerInstall.click();
+                });
+            }
+            if (iosInstallTipBtn) {
+                iosInstallTipBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const m = document.getElementById('iosTipModal');
+                    if (m) m.classList.remove('hidden');
+                });
+            }
+            const iosTipClose = document.getElementById('iosTipClose');
+            if (iosTipClose) {
+                iosTipClose.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const m = document.getElementById('iosTipModal');
+                    if (m) m.classList.add('hidden');
                 });
             }
 
@@ -2194,6 +2272,16 @@
                     showMessage('Failed to copy report', 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300');
                 });
             }
+        }
+
+        function exportCSV() {
+            const headers = ['Date','Start','End','Activity','Hours','Notes'];
+            const rows = Object.values(appState.localEntries).map(e => [e.date, e.startTime, e.endTime, (e.activity||'').replace(/,/g,' '), (e.hours||0).toFixed(2), (e.notes||'').replace(/,/g,' ')]);
+            const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'timesheet.csv'; a.click(); URL.revokeObjectURL(url);
         }
 
         // ICS Export/Import

@@ -1,7 +1,8 @@
-const CACHE_NAME = 'timesheet-cache-v1';
+const CACHE_NAME = 'timesheet-cache-v2';
 const APP_SHELL = [
   '/activity_log_app.html',
-  '/manifest.webmanifest'
+  '/manifest.webmanifest',
+  '/icons/app-icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -18,17 +19,35 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// SWR strategy for same-origin GET, cache-first for app shell
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
+  const url = new URL(request.url);
+  if (url.origin === location.origin && APP_SHELL.includes(url.pathname)) {
+    event.respondWith(caches.match(request).then(c => c || fetch(request)));
+    return;
+  }
   event.respondWith(
-    caches.match(request).then((cached) =>
-      cached || fetch(request).then((resp) => {
-        const copy = resp.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-        return resp;
-      }).catch(() => cached)
-    )
+    caches.match(request).then((cached) => {
+      const fetchPromise = fetch(request).then((network) => {
+        if (network && network.ok) {
+          const copy = network.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
+        return network;
+      }).catch(() => cached);
+      return cached || fetchPromise;
+    })
   );
+});
+
+// Offline fallback (simple): if navigation fails, return shell
+self.addEventListener('fetch', (event) => {
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match('/activity_log_app.html'))
+    );
+  }
 });
 
