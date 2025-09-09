@@ -84,6 +84,188 @@
         .voice-recording {
             animation: pulse 1s infinite;
         }
+        
+        /* Enhanced Visual Improvements */
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #D4AF37;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button-press {
+            transform: scale(0.95);
+            transition: transform 0.1s ease;
+        }
+        
+        .success-glow {
+            animation: successGlow 0.6s ease-out;
+        }
+        
+        @keyframes successGlow {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        
+        .error-shake {
+            animation: errorShake 0.5s ease-in-out;
+        }
+        
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .dark .glass-card {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #D4AF37, #F4D03F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(212, 175, 55, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.8); }
+        }
+        
+        /* Mobile Touch Improvements */
+        @media (max-width: 768px) {
+            .touch-target {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .mobile-swipe {
+                touch-action: pan-x;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .mobile-card {
+                margin-bottom: 1rem;
+                padding: 1rem;
+                border-radius: 0.75rem;
+            }
+            
+            .mobile-button {
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+                border-radius: 0.5rem;
+                min-height: 48px;
+            }
+        }
+        
+        /* Enhanced Visual Effects */
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple-effect::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .ripple-effect:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark .glass-morphism {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+        }
+        
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .text-shadow {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
         /* Dark mode styles */
         .dark {
             background: #0f172a;
@@ -125,10 +307,13 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <button id="darkModeToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors">
+                    <button id="helpBtn" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors" title="Keyboard Shortcuts">
+                        <span class="text-cwc-gold">❓</span>
+                    </button>
+                    <button id="darkModeToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors" title="Toggle Dark Mode">
                         <span class="text-cwc-gold">🌙</span>
                     </button>
-                    <button id="notificationToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors">
+                    <button id="notificationToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors" title="Toggle Notifications">
                         <span class="text-cwc-gold">🔔</span>
                     </button>
                 </div>
@@ -152,64 +337,98 @@
         <div id="dashboardView" class="view-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <!-- Progress Card -->
-                <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up">
+                <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up card-hover">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Monthly Progress</h2>
+                        <h2 class="text-xl font-bold text-gray-800 dark:text-white gradient-text">Monthly Progress</h2>
                         <div id="hoursStatus" class="px-4 py-2 rounded-full text-sm font-medium"></div>
                     </div>
                     
                     <div class="space-y-6">
                         <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-gray-600 dark:text-gray-300">Total Hours</span>
-                                <span id="totalHours" class="text-3xl font-bold text-cwc-gold">0.00</span>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-600 dark:text-gray-300 font-medium">Total Hours</span>
+                                <div class="flex items-center space-x-3">
+                                    <div class="relative">
+                                        <svg class="progress-ring w-16 h-16" width="64" height="64">
+                                            <circle class="progress-ring-circle stroke-gray-200 dark:stroke-gray-700" stroke-width="4" fill="transparent" r="40" cx="32" cy="32"/>
+                                            <circle id="progressCircle" class="progress-ring-circle stroke-cwc-gold" stroke-width="4" fill="transparent" r="40" cx="32" cy="32" style="stroke-dashoffset: 251.2"/>
+                                        </svg>
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <span id="totalHours" class="text-lg font-bold text-cwc-gold">0.00</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                                <div id="progressBar" class="bg-gradient-to-r from-cwc-gold to-cwc-yellow h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 relative overflow-hidden">
+                                <div id="progressBar" class="bg-gradient-to-r from-cwc-gold to-cwc-yellow h-3 rounded-full transition-all duration-700 ease-out relative" style="width: 0%">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse"></div>
+                                </div>
                             </div>
-                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                <span>0hrs</span>
-                                <span>30hrs (Required)</span>
+                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                <span class="flex items-center">
+                                    <div class="w-2 h-2 bg-cwc-gold rounded-full mr-2"></div>
+                                    0hrs completed
+                                </span>
+                                <span class="flex items-center">
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                                    30hrs required
+                                </span>
                             </div>
                         </div>
 
                         <!-- Quick Stats -->
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                            <div class="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl border border-blue-200 dark:border-blue-700 card-hover">
+                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <span class="text-white text-xl">📞</span>
+                                </div>
                                 <div class="text-2xl font-bold text-blue-600" id="helpDeskHours">0</div>
-                                <div class="text-xs text-blue-500">Help Desk</div>
+                                <div class="text-xs text-blue-500 font-medium">Help Desk</div>
                             </div>
-                            <div class="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                            <div class="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border border-green-200 dark:border-green-700 card-hover">
+                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <span class="text-white text-xl">🤝</span>
+                                </div>
                                 <div class="text-2xl font-bold text-green-600" id="meetingHours">0</div>
-                                <div class="text-xs text-green-500">Meetings</div>
+                                <div class="text-xs text-green-500 font-medium">Meetings</div>
                             </div>
-                            <div class="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                            <div class="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl border border-purple-200 dark:border-purple-700 card-hover">
+                                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <span class="text-white text-xl">🎉</span>
+                                </div>
                                 <div class="text-2xl font-bold text-purple-600" id="eventHours">0</div>
-                                <div class="text-xs text-purple-500">Events</div>
+                                <div class="text-xs text-purple-500 font-medium">Events</div>
                             </div>
-                            <div class="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                            <div class="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl border border-orange-200 dark:border-orange-700 card-hover">
+                                <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <span class="text-white text-xl">⚡</span>
+                                </div>
                                 <div class="text-2xl font-bold text-orange-600" id="otherHours">0</div>
-                                <div class="text-xs text-orange-500">Other</div>
+                                <div class="text-xs text-orange-500 font-medium">Other</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Quick Actions -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up">
-                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Quick Actions</h3>
-                    <div class="space-y-3">
-                        <button class="quick-add-btn w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-3 rounded-lg font-medium transition-all transform hover:scale-105" data-activity="SU Help Desk">
-                            📞 Log Help Desk
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-slide-up card-hover">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-6 gradient-text">Quick Actions</h3>
+                    <div class="space-y-4">
+                        <button class="quick-add-btn w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-4 rounded-xl font-medium transition-all transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2" data-activity="SU Help Desk">
+                            <span class="text-xl">📞</span>
+                            <span>Log Help Desk</span>
                         </button>
-                        <button class="quick-add-btn w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-3 rounded-lg font-medium transition-all transform hover:scale-105" data-activity="Meeting">
-                            🤝 Log Meeting
+                        <button class="quick-add-btn w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-4 rounded-xl font-medium transition-all transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2" data-activity="Meeting">
+                            <span class="text-xl">🤝</span>
+                            <span>Log Meeting</span>
                         </button>
-                        <button class="quick-add-btn w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white p-3 rounded-lg font-medium transition-all transform hover:scale-105" data-activity="Event">
-                            🎉 Log Event
+                        <button class="quick-add-btn w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white p-4 rounded-xl font-medium transition-all transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2" data-activity="Event">
+                            <span class="text-xl">🎉</span>
+                            <span>Log Event</span>
                         </button>
-                        <button id="startTimerBtn" class="w-full bg-gradient-to-r from-cwc-gold to-cwc-yellow text-cwc-navy p-3 rounded-lg font-medium transition-all transform hover:scale-105">
-                            ⏱️ Start Timer
+                        <button id="startTimerBtn" class="w-full bg-gradient-to-r from-cwc-gold to-cwc-yellow text-cwc-navy p-4 rounded-xl font-medium transition-all transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2 pulse-glow">
+                            <span class="text-xl">⏱️</span>
+                            <span>Start Timer</span>
                         </button>
                     </div>
                 </div>
@@ -245,14 +464,44 @@
         <div id="activitiesView" class="view-content hidden">
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-                    <h2 class="text-xl font-bold text-gray-800 dark:text-white">Activity Log</h2>
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white gradient-text">Activity Log</h2>
                     <div class="flex flex-wrap gap-2">
-                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-colors" data-hours="1">1hr</button>
-                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-colors" data-hours="2">2hrs</button>
-                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-colors" data-hours="3">3hrs</button>
-                        <button id="addRowButton" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-all transform hover:scale-105" data-hours="1">1hr</button>
+                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-all transform hover:scale-105" data-hours="2">2hrs</button>
+                        <button class="preset-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg font-medium transition-all transform hover:scale-105" data-hours="3">3hrs</button>
+                        <button id="addRowButton" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-all transform hover:scale-105 mobile-button">
                             Add Activity
                         </button>
+                    </div>
+                </div>
+
+                <!-- Search and Filter Section -->
+                <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search Activities</label>
+                            <input type="text" id="activitySearch" placeholder="Search by activity name or notes..." 
+                                   class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors">
+                        </div>
+                        <div class="sm:w-48">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter by Type</label>
+                            <select id="activityFilter" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors">
+                                <option value="">All Activities</option>
+                                <option value="help desk">Help Desk</option>
+                                <option value="meeting">Meetings</option>
+                                <option value="event">Events</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="sm:w-48">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Date Range</label>
+                            <input type="date" id="dateFilter" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors">
+                        </div>
+                        <div class="flex items-end">
+                            <button id="clearFilters" class="px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-all transform hover:scale-105">
+                                Clear
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -352,27 +601,27 @@
     </button>
 
     <!-- Bottom Navigation (Mobile) -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t dark:border-gray-700 sm:hidden">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t dark:border-gray-700 sm:hidden glass-morphism">
         <div class="grid grid-cols-5 py-2">
-            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="dashboard">
-                <span class="text-lg mb-1">📊</span>
-                <span>Dashboard</span>
+            <button class="mobile-nav touch-target flex flex-col items-center py-3 text-xs ripple-effect transition-all duration-200 active:scale-95" data-view="dashboard">
+                <span class="text-lg mb-1 transition-transform duration-200">📊</span>
+                <span class="font-medium">Dashboard</span>
             </button>
-            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="activities">
-                <span class="text-lg mb-1">📝</span>
-                <span>Activities</span>
+            <button class="mobile-nav touch-target flex flex-col items-center py-3 text-xs ripple-effect transition-all duration-200 active:scale-95" data-view="activities">
+                <span class="text-lg mb-1 transition-transform duration-200">📝</span>
+                <span class="font-medium">Activities</span>
             </button>
-            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="analytics">
-                <span class="text-lg mb-1">📈</span>
-                <span>Analytics</span>
+            <button class="mobile-nav touch-target flex flex-col items-center py-3 text-xs ripple-effect transition-all duration-200 active:scale-95" data-view="analytics">
+                <span class="text-lg mb-1 transition-transform duration-200">📈</span>
+                <span class="font-medium">Analytics</span>
             </button>
-            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="calendar">
-                <span class="text-lg mb-1">📅</span>
-                <span>Calendar</span>
+            <button class="mobile-nav touch-target flex flex-col items-center py-3 text-xs ripple-effect transition-all duration-200 active:scale-95" data-view="calendar">
+                <span class="text-lg mb-1 transition-transform duration-200">📅</span>
+                <span class="font-medium">Calendar</span>
             </button>
-            <button class="mobile-nav flex flex-col items-center py-2 text-xs" data-view="timer">
-                <span class="text-lg mb-1">⏱️</span>
-                <span>Timer</span>
+            <button class="mobile-nav touch-target flex flex-col items-center py-3 text-xs ripple-effect transition-all duration-200 active:scale-95" data-view="timer">
+                <span class="text-lg mb-1 transition-transform duration-200">⏱️</span>
+                <span class="font-medium">Timer</span>
             </button>
         </div>
     </nav>
@@ -389,6 +638,89 @@
                 <div class="mt-4 flex justify-end space-x-2">
                     <button id="voiceCancelBtn" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded-lg">Cancel</button>
                     <button id="voiceSaveBtn" class="px-4 py-2 bg-green-500 text-white rounded-lg" disabled>Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div id="shortcutsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 m-4 max-w-2xl w-full max-h-96 overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold dark:text-white">Keyboard Shortcuts</h3>
+                <button id="shortcutsCloseBtn" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <span class="text-xl">×</span>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Navigation</h4>
+                        <div class="space-y-1 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Switch to Dashboard</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Ctrl+1</kbd>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Switch to Activities</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Ctrl+2</kbd>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Switch to Analytics</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Ctrl+3</kbd>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Switch to Calendar</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Ctrl+4</kbd>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Switch to Timer</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Ctrl+5</kbd>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Quick Actions</h4>
+                        <div class="space-y-1 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Log Help Desk</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">H</kbd>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Log Meeting</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">M</kbd>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Log Event</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">E</kbd>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Start Timer</span>
+                                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">T</kbd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t dark:border-gray-600 pt-4">
+                    <h4 class="font-semibold text-gray-800 dark:text-white mb-2">General</h4>
+                    <div class="space-y-1 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Save Activity</span>
+                            <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Ctrl+S</kbd>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Generate Report</span>
+                            <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Ctrl+R</kbd>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Start/Stop Timer</span>
+                            <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Space</kbd>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Close Modal</span>
+                            <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">Esc</kbd>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -412,6 +744,11 @@
                 activity: null,
                 weekly: null,
                 trends: null
+            },
+            loadingStates: {
+                saving: false,
+                generating: false,
+                recording: false
             }
         };
 
@@ -489,7 +826,31 @@
                     e.stopPropagation();
                     const view = nav.dataset.view;
                     console.log('Mobile nav clicked:', view);
+                    
+                    // Add touch feedback
+                    addButtonPressEffect(nav);
+                    
+                    // Update active state with animation
+                    mobileNavs.forEach(n => {
+                        n.classList.remove('text-cwc-gold', 'bg-cwc-gold/10');
+                        n.querySelector('span:first-child').classList.remove('scale-110');
+                    });
+                    
+                    nav.classList.add('text-cwc-gold', 'bg-cwc-gold/10');
+                    nav.querySelector('span:first-child').classList.add('scale-110');
+                    
                     showView(view);
+                });
+                
+                // Add touch start/end events for better mobile feedback
+                nav.addEventListener('touchstart', (e) => {
+                    nav.classList.add('active:scale-95');
+                });
+                
+                nav.addEventListener('touchend', (e) => {
+                    setTimeout(() => {
+                        nav.classList.remove('active:scale-95');
+                    }, 150);
                 });
             });
             console.log('Mobile nav attached:', mobileNavs.length);
@@ -722,7 +1083,156 @@
                 });
             }
 
+            // Help button
+            const helpBtn = document.getElementById('helpBtn');
+            if (helpBtn) {
+                helpBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Help button clicked');
+                    showShortcutsModal();
+                });
+            }
+
+            // Shortcuts modal
+            const shortcutsCloseBtn = document.getElementById('shortcutsCloseBtn');
+            if (shortcutsCloseBtn) {
+                shortcutsCloseBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Shortcuts close clicked');
+                    hideShortcutsModal();
+                });
+            }
+
+            // Search and filter functionality
+            const activitySearch = document.getElementById('activitySearch');
+            const activityFilter = document.getElementById('activityFilter');
+            const dateFilter = document.getElementById('dateFilter');
+            const clearFilters = document.getElementById('clearFilters');
+
+            if (activitySearch) {
+                activitySearch.addEventListener('input', () => {
+                    console.log('Search input changed');
+                    filterActivities();
+                });
+            }
+
+            if (activityFilter) {
+                activityFilter.addEventListener('change', () => {
+                    console.log('Filter changed');
+                    filterActivities();
+                });
+            }
+
+            if (dateFilter) {
+                dateFilter.addEventListener('change', () => {
+                    console.log('Date filter changed');
+                    filterActivities();
+                });
+            }
+
+            if (clearFilters) {
+                clearFilters.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Clear filters clicked');
+                    clearAllFilters();
+                });
+            }
+
             console.log('All event listeners attached successfully');
+            
+            // Add keyboard shortcuts
+            setupKeyboardShortcuts();
+        }
+
+        // Keyboard shortcuts
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                // Only trigger shortcuts when not typing in inputs
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    return;
+                }
+                
+                // Ctrl/Cmd + number keys for navigation
+                if ((e.ctrlKey || e.metaKey) && e.key >= '1' && e.key <= '5') {
+                    e.preventDefault();
+                    const views = ['dashboard', 'activities', 'analytics', 'calendar', 'timer'];
+                    const viewIndex = parseInt(e.key) - 1;
+                    if (views[viewIndex]) {
+                        showView(views[viewIndex]);
+                        showMessage(`Switched to ${views[viewIndex]}`, 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300');
+                    }
+                }
+                
+                // Ctrl/Cmd + S to save current activity
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    if (appState.currentView === 'activities') {
+                        // Save the first unsaved activity row
+                        const saveBtn = document.querySelector('.save-row-btn');
+                        if (saveBtn) {
+                            saveBtn.click();
+                            showMessage('Activity saved', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+                        }
+                    }
+                }
+                
+                // Ctrl/Cmd + R to generate report
+                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                    e.preventDefault();
+                    generateReport();
+                }
+                
+                // Space to start/stop timer (when on timer view)
+                if (e.key === ' ' && appState.currentView === 'timer') {
+                    e.preventDefault();
+                    const timerBtn = document.getElementById('timerStartStop');
+                    if (timerBtn) {
+                        timerBtn.click();
+                    }
+                }
+                
+                // Escape to close modals
+                if (e.key === 'Escape') {
+                    const voiceModal = document.getElementById('voiceModal');
+                    const shortcutsModal = document.getElementById('shortcutsModal');
+                    if (voiceModal && !voiceModal.classList.contains('hidden')) {
+                        hideVoiceModal();
+                    } else if (shortcutsModal && !shortcutsModal.classList.contains('hidden')) {
+                        hideShortcutsModal();
+                    }
+                }
+                
+                // F1 or ? to show shortcuts
+                if (e.key === 'F1' || e.key === '?') {
+                    e.preventDefault();
+                    showShortcutsModal();
+                }
+                
+                // Quick add shortcuts
+                if (e.key === 'h' && appState.currentView === 'dashboard') {
+                    e.preventDefault();
+                    const helpDeskBtn = document.querySelector('[data-activity="SU Help Desk"]');
+                    if (helpDeskBtn) helpDeskBtn.click();
+                }
+                if (e.key === 'm' && appState.currentView === 'dashboard') {
+                    e.preventDefault();
+                    const meetingBtn = document.querySelector('[data-activity="Meeting"]');
+                    if (meetingBtn) meetingBtn.click();
+                }
+                if (e.key === 'e' && appState.currentView === 'dashboard') {
+                    e.preventDefault();
+                    const eventBtn = document.querySelector('[data-activity="Event"]');
+                    if (eventBtn) eventBtn.click();
+                }
+                if (e.key === 't' && appState.currentView === 'dashboard') {
+                    e.preventDefault();
+                    const timerBtn = document.getElementById('startTimerBtn');
+                    if (timerBtn) timerBtn.click();
+                }
+            });
         }
 
         // View management
@@ -830,32 +1340,39 @@
             const rowId = 'row_' + Date.now();
             const row = document.createElement('div');
             row.id = rowId;
-            row.className = 'bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600';
+            row.className = 'bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600 card-hover';
             row.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
-                        <input type="date" class="date-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" value="${new Date().toISOString().split('T')[0]}">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date <span class="text-red-500">*</span></label>
+                        <input type="date" class="date-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors" value="${new Date().toISOString().split('T')[0]}" required>
+                        <div class="date-error text-xs text-red-500 mt-1 hidden"></div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Time</label>
-                        <input type="time" class="start-time-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" value="09:00">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Time <span class="text-red-500">*</span></label>
+                        <input type="time" class="start-time-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors" value="09:00" required>
+                        <div class="start-time-error text-xs text-red-500 mt-1 hidden"></div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Time</label>
-                        <input type="time" class="end-time-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" value="17:00">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Time <span class="text-red-500">*</span></label>
+                        <input type="time" class="end-time-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors" value="17:00" required>
+                        <div class="end-time-error text-xs text-red-500 mt-1 hidden"></div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Activity</label>
-                        <input type="text" class="activity-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" placeholder="Activity name">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Activity <span class="text-red-500">*</span></label>
+                        <input type="text" class="activity-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors" placeholder="Activity name" required>
+                        <div class="activity-error text-xs text-red-500 mt-1 hidden"></div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>
-                        <input type="text" class="notes-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white" placeholder="Notes">
+                        <input type="text" class="notes-input w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors" placeholder="Notes">
                     </div>
                     <div class="flex flex-col gap-2">
-                        <button class="save-row-btn bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm transition-colors">Save</button>
-                        <button class="delete-row-btn bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm transition-colors">Delete</button>
+                        <button class="save-row-btn bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <span class="save-text">Save</span>
+                            <span class="loading-text hidden">Saving...</span>
+                        </button>
+                        <button class="delete-row-btn bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm transition-all transform hover:scale-105">Delete</button>
                     </div>
                 </div>
             `;
@@ -865,13 +1382,22 @@
             // Add event listeners to the new row
             const saveBtn = row.querySelector('.save-row-btn');
             const deleteBtn = row.querySelector('.delete-row-btn');
+            const inputs = row.querySelectorAll('input[required]');
+            
+            // Real-time validation
+            inputs.forEach(input => {
+                input.addEventListener('input', () => validateActivityRow(row));
+                input.addEventListener('blur', () => validateActivityRow(row));
+            });
             
             if (saveBtn) {
                 saveBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('Save row clicked');
-                    saveActivityRow(row);
+                    if (validateActivityRow(row)) {
+                        saveActivityRow(row);
+                    }
                 });
             }
             
@@ -882,6 +1408,67 @@
                     console.log('Delete row clicked');
                     deleteActivityRow(row);
                 });
+            }
+        }
+
+        function validateActivityRow(row) {
+            const dateInput = row.querySelector('.date-input');
+            const startTimeInput = row.querySelector('.start-time-input');
+            const endTimeInput = row.querySelector('.end-time-input');
+            const activityInput = row.querySelector('.activity-input');
+            
+            let isValid = true;
+            
+            // Clear previous errors
+            row.querySelectorAll('.error').forEach(error => error.classList.add('hidden'));
+            row.querySelectorAll('input').forEach(input => {
+                input.classList.remove('border-red-500', 'ring-red-500');
+                input.classList.add('border-gray-300', 'dark:border-gray-600');
+            });
+            
+            // Validate date
+            if (!dateInput.value) {
+                showFieldError(row, 'date', 'Date is required');
+                isValid = false;
+            }
+            
+            // Validate activity name
+            if (!activityInput.value.trim()) {
+                showFieldError(row, 'activity', 'Activity name is required');
+                isValid = false;
+            }
+            
+            // Validate times
+            if (!startTimeInput.value || !endTimeInput.value) {
+                if (!startTimeInput.value) showFieldError(row, 'start-time', 'Start time is required');
+                if (!endTimeInput.value) showFieldError(row, 'end-time', 'End time is required');
+                isValid = false;
+            } else if (startTimeInput.value >= endTimeInput.value) {
+                showFieldError(row, 'end-time', 'End time must be after start time');
+                isValid = false;
+            }
+            
+            // Update save button state
+            const saveBtn = row.querySelector('.save-row-btn');
+            if (saveBtn) {
+                saveBtn.disabled = !isValid;
+            }
+            
+            return isValid;
+        }
+
+        function showFieldError(row, fieldName, message) {
+            const input = row.querySelector(`.${fieldName}-input`);
+            const errorDiv = row.querySelector(`.${fieldName}-error`);
+            
+            if (input) {
+                input.classList.remove('border-gray-300', 'dark:border-gray-600');
+                input.classList.add('border-red-500', 'ring-red-500');
+            }
+            
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.classList.remove('hidden');
             }
         }
 
@@ -896,24 +1483,65 @@
             const endTimeInput = row.querySelector('.end-time-input');
             const activityInput = row.querySelector('.activity-input');
             const notesInput = row.querySelector('.notes-input');
+            const saveBtn = row.querySelector('.save-row-btn');
             
             if (!dateInput || !startTimeInput || !endTimeInput || !activityInput) return;
             
-            const entry = {
-                id: appState.entryCounter++,
-                date: dateInput.value,
-                startTime: startTimeInput.value,
-                endTime: endTimeInput.value,
-                activity: activityInput.value,
-                notes: notesInput.value || '',
-                hours: calculateHours(startTimeInput.value, endTimeInput.value)
-            };
+            // Show loading state
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<div class="loading-spinner"></div>Saving...';
+            }
             
-            appState.localEntries[entry.id] = entry;
-            updateTotalHours();
-            updateHoursStatus();
-            updateQuickStats();
-            showMessage('Activity saved successfully', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+            // Simulate processing time
+            setTimeout(() => {
+                try {
+                    const entry = {
+                        id: appState.entryCounter++,
+                        date: dateInput.value,
+                        startTime: startTimeInput.value,
+                        endTime: endTimeInput.value,
+                        activity: activityInput.value,
+                        notes: notesInput.value || '',
+                        hours: calculateHours(startTimeInput.value, endTimeInput.value)
+                    };
+                    
+                    appState.localEntries[entry.id] = entry;
+                    updateTotalHours();
+                    updateHoursStatus();
+                    updateQuickStats();
+                    
+                    // Add success effect to the row
+                    addSuccessEffect(row);
+                    
+                    // Update save button to show success
+                    if (saveBtn) {
+                        saveBtn.innerHTML = '✅ Saved';
+                        saveBtn.classList.add('bg-green-600');
+                        saveBtn.classList.remove('bg-green-500');
+                        
+                        // Reset after 2 seconds
+                        setTimeout(() => {
+                            saveBtn.innerHTML = 'Save';
+                            saveBtn.classList.remove('bg-green-600');
+                            saveBtn.classList.add('bg-green-500');
+                            saveBtn.disabled = false;
+                        }, 2000);
+                    }
+                    
+                    showMessage('Activity saved successfully', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+                } catch (error) {
+                    console.error('Error saving activity:', error);
+                    addErrorEffect(row);
+                    showMessage('Error saving activity', 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300');
+                    
+                    // Reset save button
+                    if (saveBtn) {
+                        saveBtn.innerHTML = 'Save';
+                        saveBtn.disabled = false;
+                    }
+                }
+            }, 500);
         }
 
         function deleteActivityRow(row) {
@@ -1369,6 +1997,20 @@
                 const percentage = Math.min((total / 30) * 100, 100);
                 progressBar.style.width = percentage + '%';
             }
+            
+            // Update circular progress indicator
+            const progressCircle = document.getElementById('progressCircle');
+            if (progressCircle) {
+                const percentage = Math.min((total / 30) * 100, 100);
+                const circumference = 2 * Math.PI * 40; // radius = 40
+                const offset = circumference - (percentage / 100) * circumference;
+                progressCircle.style.strokeDashoffset = offset;
+                
+                // Add success effect when reaching 100%
+                if (percentage >= 100) {
+                    addSuccessEffect(progressCircle);
+                }
+            }
         }
 
         function updateHoursStatus() {
@@ -1418,42 +2060,62 @@
 
         function generateReport() {
             console.log('Generating report');
-            let report = 'SU PRESIDENT MONTHLY TIMESHEET REPORT\n';
-            report += 'City of Wolverhampton College\n';
-            report += 'Generated: ' + new Date().toLocaleDateString() + '\n\n';
             
-            report += 'ACTIVITY LOG:\n';
-            report += 'Date\t\tStart\tEnd\t\tActivity\t\t\tHours\tNotes\n';
-            report += '-'.repeat(80) + '\n';
+            // Show loading state
+            setLoadingState('generateButton', true, 'Generating...');
+            showLoadingOverlay(true);
             
-            Object.values(appState.localEntries).forEach(entry => {
-                report += `${entry.date}\t${entry.startTime}\t${entry.endTime}\t${entry.activity.padEnd(20)}\t${entry.hours.toFixed(2)}\t${entry.notes}\n`;
-            });
-            
-            let totalHours = 0;
-            Object.values(appState.localEntries).forEach(entry => {
-                totalHours += entry.hours || 0;
-            });
-            
-            report += '\n' + '-'.repeat(80) + '\n';
-            report += `TOTAL HOURS: ${totalHours.toFixed(2)}\n`;
-            report += `REQUIRED HOURS: 30.00\n`;
-            report += `STATUS: ${totalHours >= 30 ? 'COMPLETE' : 'INCOMPLETE'}\n\n`;
-            
-            const summary = document.getElementById('monthlySummary');
-            if (summary && summary.value.trim()) {
-                report += 'MONTHLY SUMMARY:\n';
-                report += summary.value + '\n';
-            }
-            
-            const outputSection = document.getElementById('outputSection');
-            const reportOutput = document.getElementById('reportOutput');
-            
-            if (outputSection && reportOutput) {
-                reportOutput.textContent = report;
-                outputSection.classList.remove('hidden');
-                showMessage('Report generated successfully', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
-            }
+            // Simulate processing time for better UX
+            setTimeout(() => {
+                try {
+                    let report = 'SU PRESIDENT MONTHLY TIMESHEET REPORT\n';
+                    report += 'City of Wolverhampton College\n';
+                    report += 'Generated: ' + new Date().toLocaleDateString() + '\n\n';
+                    
+                    report += 'ACTIVITY LOG:\n';
+                    report += 'Date\t\tStart\tEnd\t\tActivity\t\t\tHours\tNotes\n';
+                    report += '-'.repeat(80) + '\n';
+                    
+                    Object.values(appState.localEntries).forEach(entry => {
+                        report += `${entry.date}\t${entry.startTime}\t${entry.endTime}\t${entry.activity.padEnd(20)}\t${entry.hours.toFixed(2)}\t${entry.notes}\n`;
+                    });
+                    
+                    let totalHours = 0;
+                    Object.values(appState.localEntries).forEach(entry => {
+                        totalHours += entry.hours || 0;
+                    });
+                    
+                    report += '\n' + '-'.repeat(80) + '\n';
+                    report += `TOTAL HOURS: ${totalHours.toFixed(2)}\n`;
+                    report += `REQUIRED HOURS: 30.00\n`;
+                    report += `STATUS: ${totalHours >= 30 ? 'COMPLETE' : 'INCOMPLETE'}\n\n`;
+                    
+                    const summary = document.getElementById('monthlySummary');
+                    if (summary && summary.value.trim()) {
+                        report += 'MONTHLY SUMMARY:\n';
+                        report += summary.value + '\n';
+                    }
+                    
+                    const outputSection = document.getElementById('outputSection');
+                    const reportOutput = document.getElementById('reportOutput');
+                    
+                    if (outputSection && reportOutput) {
+                        reportOutput.textContent = report;
+                        outputSection.classList.remove('hidden');
+                        
+                        // Add success effect
+                        addSuccessEffect(outputSection);
+                        showMessage('Report generated successfully', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+                    }
+                } catch (error) {
+                    console.error('Error generating report:', error);
+                    showMessage('Error generating report', 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300');
+                } finally {
+                    // Hide loading state
+                    setLoadingState('generateButton', false, 'Generate Report');
+                    showLoadingOverlay(false);
+                }
+            }, 1000);
         }
 
         function copyReport() {
@@ -1480,6 +2142,177 @@
                     messageBox.classList.add('hidden');
                 }, 3000);
             }
+        }
+
+        // Loading state management
+        function setLoadingState(elementId, isLoading, loadingText = 'Loading...') {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            if (isLoading) {
+                element.disabled = true;
+                element.innerHTML = `<div class="loading-spinner"></div>${loadingText}`;
+                element.classList.add('opacity-75');
+            } else {
+                element.disabled = false;
+                element.classList.remove('opacity-75');
+            }
+        }
+
+        function showLoadingOverlay(show = true) {
+            let overlay = document.getElementById('loadingOverlay');
+            if (!overlay && show) {
+                overlay = document.createElement('div');
+                overlay.id = 'loadingOverlay';
+                overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                overlay.innerHTML = `
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex items-center space-x-3">
+                        <div class="loading-spinner"></div>
+                        <span class="text-gray-700 dark:text-gray-300">Processing...</span>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+            } else if (overlay && !show) {
+                overlay.remove();
+            }
+        }
+
+        function addButtonPressEffect(button) {
+            button.classList.add('button-press');
+            setTimeout(() => {
+                button.classList.remove('button-press');
+            }, 100);
+        }
+
+        function addSuccessEffect(element) {
+            element.classList.add('success-glow');
+            setTimeout(() => {
+                element.classList.remove('success-glow');
+            }, 600);
+        }
+
+        function addErrorEffect(element) {
+            element.classList.add('error-shake');
+            setTimeout(() => {
+                element.classList.remove('error-shake');
+            }, 500);
+        }
+
+        // Shortcuts modal functions
+        function showShortcutsModal() {
+            console.log('Showing shortcuts modal');
+            const modal = document.getElementById('shortcutsModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function hideShortcutsModal() {
+            console.log('Hiding shortcuts modal');
+            const modal = document.getElementById('shortcutsModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Search and filter functions
+        function filterActivities() {
+            const searchTerm = document.getElementById('activitySearch')?.value.toLowerCase() || '';
+            const filterType = document.getElementById('activityFilter')?.value || '';
+            const filterDate = document.getElementById('dateFilter')?.value || '';
+            
+            const rows = document.querySelectorAll('#timeLogContainer > div');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const activityInput = row.querySelector('.activity-input');
+                const notesInput = row.querySelector('.notes-input');
+                const dateInput = row.querySelector('.date-input');
+                
+                if (!activityInput) return;
+                
+                const activity = activityInput.value.toLowerCase();
+                const notes = notesInput?.value.toLowerCase() || '';
+                const date = dateInput?.value || '';
+                
+                let showRow = true;
+                
+                // Search filter
+                if (searchTerm && !activity.includes(searchTerm) && !notes.includes(searchTerm)) {
+                    showRow = false;
+                }
+                
+                // Type filter
+                if (filterType) {
+                    if (filterType === 'help desk' && !activity.includes('help desk')) {
+                        showRow = false;
+                    } else if (filterType === 'meeting' && !activity.includes('meeting')) {
+                        showRow = false;
+                    } else if (filterType === 'event' && !activity.includes('event')) {
+                        showRow = false;
+                    } else if (filterType === 'other' && (activity.includes('help desk') || activity.includes('meeting') || activity.includes('event'))) {
+                        showRow = false;
+                    }
+                }
+                
+                // Date filter
+                if (filterDate && date !== filterDate) {
+                    showRow = false;
+                }
+                
+                if (showRow) {
+                    row.style.display = 'block';
+                    row.classList.add('animate-fade-in');
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Show no results message
+            const container = document.getElementById('timeLogContainer');
+            let noResultsMsg = document.getElementById('noResultsMessage');
+            
+            if (visibleCount === 0 && (searchTerm || filterType || filterDate)) {
+                if (!noResultsMsg) {
+                    noResultsMsg = document.createElement('div');
+                    noResultsMsg.id = 'noResultsMessage';
+                    noResultsMsg.className = 'text-center py-8 text-gray-500 dark:text-gray-400';
+                    noResultsMsg.innerHTML = `
+                        <div class="text-6xl mb-4">🔍</div>
+                        <h3 class="text-lg font-medium mb-2">No activities found</h3>
+                        <p class="text-sm">Try adjusting your search or filter criteria</p>
+                    `;
+                    container.appendChild(noResultsMsg);
+                }
+                noResultsMsg.style.display = 'block';
+            } else if (noResultsMsg) {
+                noResultsMsg.style.display = 'none';
+            }
+        }
+
+        function clearAllFilters() {
+            const activitySearch = document.getElementById('activitySearch');
+            const activityFilter = document.getElementById('activityFilter');
+            const dateFilter = document.getElementById('dateFilter');
+            
+            if (activitySearch) activitySearch.value = '';
+            if (activityFilter) activityFilter.value = '';
+            if (dateFilter) dateFilter.value = '';
+            
+            // Show all rows
+            const rows = document.querySelectorAll('#timeLogContainer > div');
+            rows.forEach(row => {
+                row.style.display = 'block';
+            });
+            
+            // Hide no results message
+            const noResultsMsg = document.getElementById('noResultsMessage');
+            if (noResultsMsg) {
+                noResultsMsg.style.display = 'none';
+            }
+            
+            showMessage('Filters cleared', 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300');
         }
 
         // Initialize app when DOM is loaded
