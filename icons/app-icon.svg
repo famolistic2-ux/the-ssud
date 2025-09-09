@@ -8,11 +8,13 @@
   <!-- Shield/badge -->
   <path d="M256 32l160 64v144c0 112-80 176-160 208-80-32-160-96-160-208V96l160-64z" fill="#1A1A2E"/>
   <path d="M256 56l136 54v126c0 95-65 151-136 181-71-30-136-86-136-181V110l136-54z" fill="url(#g)" opacity="0.12"/>
-  <!-- W letter -->
-  <path d="M140 180l36 160h24l32-110 32 110h24l36-160h-28l-22 104-30-104h-24l-30 104-22-104z" fill="#F8F9FA"/>
-  <!-- Clock circle -->
-  <circle cx="380" cy="152" r="44" fill="#D4AF37" stroke="#F8F9FA" stroke-width="6"/>
-  <!-- Clock hands -->
-  <path d="M380 152v-22" stroke="#1A1A2E" stroke-width="8" stroke-linecap="round"/>
-  <path d="M380 152h18" stroke="#1A1A2E" stroke-width="8" stroke-linecap="round"/>
+  <!-- Modern W with integrated clock hands -->
+  <g transform="translate(0,0)">
+    <!-- W base -->
+    <path d="M128 176l44 176h28l36-116 36 116h28l44-176h-32l-26 120-34-112h-28l-34 112-26-120z" fill="#F8F9FA"/>
+    <!-- Clock overlay centered on W cross -->
+    <circle cx="256" cy="204" r="28" fill="#D4AF37" stroke="#1A1A2E" stroke-width="4"/>
+    <path d="M256 204v-18" stroke="#1A1A2E" stroke-width="6" stroke-linecap="round"/>
+    <path d="M256 204h14" stroke="#1A1A2E" stroke-width="6" stroke-linecap="round"/>
+  </g>
 </svg>

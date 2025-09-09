@@ -1,6 +1,6 @@
 {
-  "name": "SUtimetracker",
-  "short_name": "SUtimer",
+  "name": "SUTimeTracker",
+  "short_name": "SUTime",
   "start_url": "/activity_log_app.html",
   "scope": "/",
   "display": "standalone",
