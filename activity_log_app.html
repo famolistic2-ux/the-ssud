@@ -291,6 +291,8 @@
             cursor: text !important;
         }
     </style>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#D4AF37">
 </head>
 <body class="bg-gradient-to-br from-cwc-light to-gray-100 min-h-screen transition-all duration-300">
     <!-- Header with College Branding -->
@@ -547,6 +549,11 @@
                         <button id="prevMonth" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 transition-colors">←</button>
                         <span id="currentMonth" class="px-4 py-2 font-medium"></span>
                         <button id="nextMonth" class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 transition-colors">→</button>
+                        <button id="exportICS" class="p-2 bg-cwc-gold text-cwc-navy rounded-lg hover:bg-cwc-yellow transition-colors" title="Export calendar (ICS)">Export</button>
+                        <label class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer" title="Import ICS">
+                            Import
+                            <input id="importICS" type="file" accept="text/calendar,.ics" class="hidden" />
+                        </label>
                     </div>
                 </div>
                 <div id="calendar" class="grid grid-cols-7 gap-1 text-center">
@@ -1053,6 +1060,8 @@
             // Calendar navigation
             const prevMonth = document.getElementById('prevMonth');
             const nextMonth = document.getElementById('nextMonth');
+            const exportICSBtn = document.getElementById('exportICS');
+            const importICSInput = document.getElementById('importICS');
 
             if (prevMonth) {
                 prevMonth.addEventListener('click', (e) => {
@@ -1069,6 +1078,31 @@
                     e.stopPropagation();
                     console.log('Next month clicked');
                     changeMonth(1);
+                });
+            }
+
+            if (exportICSBtn) {
+                exportICSBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Export ICS clicked');
+                    exportActivitiesAsICS();
+                });
+            }
+
+            if (importICSInput) {
+                importICSInput.addEventListener('change', async (e) => {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+                    try {
+                        await importActivitiesFromICS(file);
+                        showMessage('ICS imported successfully', 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300');
+                    } catch (err) {
+                        console.error(err);
+                        showMessage('Failed to import ICS', 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300');
+                    } finally {
+                        e.target.value = '';
+                    }
                 });
             }
 
@@ -2130,6 +2164,74 @@
             }
         }
 
+        // ICS Export/Import
+        function pad2(n) { return String(n).padStart(2, '0'); }
+        function toICSDate(dateStr, timeStr) {
+            // dateStr: YYYY-MM-DD, timeStr: HH:MM
+            const [y,m,d] = dateStr.split('-').map(Number);
+            const [hh,mm] = timeStr.split(':').map(Number);
+            return `${y}${pad2(m)}${pad2(d)}T${pad2(hh)}${pad2(mm)}00`;
+        }
+
+        function exportActivitiesAsICS() {
+            const lines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//CWC//Timesheet//EN'
+            ];
+            Object.values(appState.localEntries).forEach((entry) => {
+                const uid = `ts-${entry.id}@cwc`;
+                const dtStart = toICSDate(entry.date, entry.startTime || '09:00');
+                const dtEnd = toICSDate(entry.date, entry.endTime || '17:00');
+                const summary = (entry.activity || 'Activity').replace(/\n/g, ' ');
+                const description = (entry.notes || '').replace(/\n/g, ' ');
+                lines.push('BEGIN:VEVENT');
+                lines.push(`UID:${uid}`);
+                lines.push(`DTSTAMP:${dtStart}Z`);
+                lines.push(`DTSTART:${dtStart}Z`);
+                lines.push(`DTEND:${dtEnd}Z`);
+                lines.push(`SUMMARY:${summary}`);
+                if (description) lines.push(`DESCRIPTION:${description}`);
+                lines.push('END:VEVENT');
+            });
+            lines.push('END:VCALENDAR');
+            const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'timesheet.ics';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function importActivitiesFromICS(file) {
+            const text = await file.text();
+            // Minimal ICS parse: split VEVENTs
+            const events = text.split('BEGIN:VEVENT').slice(1).map(v => 'BEGIN:VEVENT' + v);
+            events.forEach((evt) => {
+                const get = (key) => {
+                    const m = evt.match(new RegExp(`^${key}:(.+)$`, 'm'));
+                    return m ? m[1].trim() : '';
+                };
+                const dtStart = get('DTSTART');
+                const dtEnd = get('DTEND');
+                const summary = get('SUMMARY') || 'Imported Activity';
+                const description = get('DESCRIPTION') || '';
+                // Parse YYYYMMDDTHHMMSS or YYYYMMDDTHHMM
+                const parseDT = (s) => {
+                    const y = s.slice(0,4), m = s.slice(4,6), d = s.slice(6,8), hh = s.slice(9,11), mm = s.slice(11,13);
+                    return { date: `${y}-${m}-${d}`, time: `${hh}:${mm}` };
+                };
+                if (!dtStart || !dtEnd) return;
+                const s = parseDT(dtStart);
+                const e = parseDT(dtEnd);
+                addEntry({ date: s.date, startTime: s.time, endTime: e.time, activity: summary, notes: description });
+            });
+            updateTotalHours();
+            updateHoursStatus();
+            updateQuickStats();
+        }
+
         function showMessage(message, className) {
             console.log('Showing message:', message);
             const messageBox = document.getElementById('messageBox');
@@ -2320,6 +2422,17 @@
             console.log('DOM loaded, initializing app...');
             initializeApp();
             setupEventListeners();
+            // Register service worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js').then(() => {
+                    console.log('Service worker registered');
+                }).catch((e) => console.warn('SW registration failed', e));
+            }
+            // iOS safe area support for mobile footer/header
+            document.documentElement.style.setProperty('--sat', 'env(safe-area-inset-top)');
+            document.documentElement.style.setProperty('--sar', 'env(safe-area-inset-right)');
+            document.documentElement.style.setProperty('--sab', 'env(safe-area-inset-bottom)');
+            document.documentElement.style.setProperty('--sal', 'env(safe-area-inset-left)');
             console.log('✅ App loaded successfully!');
         });
 
