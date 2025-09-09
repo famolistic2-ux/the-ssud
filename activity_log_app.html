@@ -602,6 +602,23 @@
         </div>
     </div>
 
+    <!-- Install Prompt Banner (Mobile-friendly) -->
+    <div id="installBanner" class="hidden fixed left-3 right-3 bottom-[calc(0.75rem+var(--sab,0))] z-50">
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl p-4 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cwc-gold to-cwc-yellow text-cwc-navy flex items-center justify-center font-bold">W</div>
+                <div>
+                    <div class="text-sm font-semibold text-gray-800 dark:text-gray-100">Install Timesheet</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400">Quick access, offline support</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="dismissInstall" class="px-3 py-2 text-gray-600 dark:text-gray-300 text-sm">Not now</button>
+                <button id="installBtn" class="px-3 py-2 bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy rounded-md text-sm font-semibold">Install</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Floating Action Button -->
     <button id="fabBtn" class="floating-btn bg-gradient-to-r from-cwc-gold to-cwc-yellow text-cwc-navy w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-xl font-bold hover:shadow-xl transition-all transform hover:scale-110">
         +
@@ -1406,6 +1423,7 @@
                             <span class="save-text">Save</span>
                             <span class="loading-text hidden">Saving...</span>
                         </button>
+                        <button class="add-calendar-btn bg-cwc-gold hover:bg-cwc-yellow text-cwc-navy px-3 py-2 rounded-lg text-sm transition-all transform hover:scale-105">Add to Calendar</button>
                         <button class="delete-row-btn bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm transition-all transform hover:scale-105">Delete</button>
                     </div>
                 </div>
@@ -1416,6 +1434,7 @@
             // Add event listeners to the new row
             const saveBtn = row.querySelector('.save-row-btn');
             const deleteBtn = row.querySelector('.delete-row-btn');
+            const addCalBtn = row.querySelector('.add-calendar-btn');
             const inputs = row.querySelectorAll('input[required]');
             
             // Real-time validation
@@ -1441,6 +1460,15 @@
                     e.stopPropagation();
                     console.log('Delete row clicked');
                     deleteActivityRow(row);
+                });
+            }
+
+            if (addCalBtn) {
+                addCalBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Add to calendar clicked');
+                    exportSingleRowICS(row);
                 });
             }
         }
@@ -2232,6 +2260,36 @@
             updateQuickStats();
         }
 
+        function exportSingleRowICS(row) {
+            const dateInput = row.querySelector('.date-input');
+            const startTimeInput = row.querySelector('.start-time-input');
+            const endTimeInput = row.querySelector('.end-time-input');
+            const activityInput = row.querySelector('.activity-input');
+            const notesInput = row.querySelector('.notes-input');
+            if (!dateInput || !startTimeInput || !endTimeInput || !activityInput) return;
+            const lines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//CWC//Timesheet//EN',
+                'BEGIN:VEVENT',
+                `UID:row-${Date.now()}@cwc`,
+                `DTSTAMP:${toICSDate(dateInput.value, startTimeInput.value)}Z`,
+                `DTSTART:${toICSDate(dateInput.value, startTimeInput.value)}Z`,
+                `DTEND:${toICSDate(dateInput.value, endTimeInput.value)}Z`,
+                `SUMMARY:${(activityInput.value || 'Activity').replace(/\n/g, ' ')}`,
+                notesInput && notesInput.value ? `DESCRIPTION:${notesInput.value.replace(/\n/g, ' ')}` : '',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].filter(Boolean);
+            const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${(activityInput.value || 'activity').replace(/\s+/g,'_')}.ics`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
         function showMessage(message, className) {
             console.log('Showing message:', message);
             const messageBox = document.getElementById('messageBox');
@@ -2427,6 +2485,31 @@
                 navigator.serviceWorker.register('/service-worker.js').then(() => {
                     console.log('Service worker registered');
                 }).catch((e) => console.warn('SW registration failed', e));
+            }
+            // Install prompt handling
+            let deferredPrompt = null;
+            const banner = document.getElementById('installBanner');
+            const installBtn = document.getElementById('installBtn');
+            const dismissBtn = document.getElementById('dismissInstall');
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                if (banner) banner.classList.remove('hidden');
+            });
+            if (installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    if (!deferredPrompt) return;
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log('Install outcome:', outcome);
+                    deferredPrompt = null;
+                    if (banner) banner.classList.add('hidden');
+                });
+            }
+            if (dismissBtn) {
+                dismissBtn.addEventListener('click', () => {
+                    if (banner) banner.classList.add('hidden');
+                });
             }
             // iOS safe area support for mobile footer/header
             document.documentElement.style.setProperty('--sat', 'env(safe-area-inset-top)');
