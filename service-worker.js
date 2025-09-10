@@ -1,8 +1,14 @@
-const CACHE_NAME = 'timesheet-cache-v2';
+const CACHE_NAME = 'sutimetracker-cache-v3';
 const APP_SHELL = [
   '/activity_log_app.html',
   '/manifest.webmanifest',
-  '/icons/app-icon.svg'
+  '/offline.html',
+  '/print.css',
+  '/_redirects',
+  '/icons/app-icon.svg',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
+  '/icons/app-icon-maskable.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -42,11 +48,11 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Offline fallback (simple): if navigation fails, return shell
+// Offline fallback: if navigation fails, return offline page
 self.addEventListener('fetch', (event) => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match('/activity_log_app.html'))
+      fetch(event.request).catch(() => caches.match('/offline.html'))
     );
   }
 });

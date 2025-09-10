@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUTimeTracker - Offline</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-cwc-navy text-white min-h-screen flex items-center justify-center">
+    <div class="text-center max-w-md mx-auto p-6">
+        <!-- Logo -->
+        <div class="mb-8">
+            <div class="w-24 h-24 mx-auto bg-cwc-gold rounded-full flex items-center justify-center mb-4">
+                <svg width="48" height="48" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M256 48L464 160V352L256 464L48 352V160L256 48Z" fill="#1A1A2E"/>
+                    <path d="M200 200L256 256L312 200L256 144L200 200Z" fill="#D4AF37"/>
+                    <path d="M256 144V256H312" stroke="#D4AF37" stroke-width="16" stroke-linecap="round"/>
+                    <path d="M256 256L200 312L256 368L312 312L256 256Z" fill="#D4AF37"/>
+                    <path d="M256 368V256H200" stroke="#D4AF37" stroke-width="16" stroke-linecap="round"/>
+                    <text x="256" y="290" font-family="Arial, sans-serif" font-size="180" font-weight="bold" fill="#1A1A2E" text-anchor="middle" alignment-baseline="middle">W</text>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-cwc-gold">SUTimeTracker</h1>
+        </div>
+
+        <!-- Offline Message -->
+        <div class="mb-8">
+            <div class="pulse-animation mb-4">
+                <svg class="w-16 h-16 mx-auto text-cwc-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z"></path>
+                </svg>
+            </div>
+            <h2 class="text-xl font-semibold mb-2">You're Offline</h2>
+            <p class="text-gray-300 mb-4">No internet connection detected. Some features may be limited.</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-3">
+            <button onclick="window.location.reload()" 
+                    class="w-full bg-cwc-gold text-cwc-navy font-semibold py-3 px-6 rounded-lg hover:bg-cwc-yellow transition-colors">
+                Try Again
+            </button>
+            <button onclick="window.history.back()" 
+                    class="w-full border border-cwc-gold text-cwc-gold font-semibold py-3 px-6 rounded-lg hover:bg-cwc-gold hover:text-cwc-navy transition-colors">
+                Go Back
+            </button>
+        </div>
+
+        <!-- Info -->
+        <div class="mt-8 text-sm text-gray-400">
+            <p>Your data is saved locally and will sync when you're back online.</p>
+        </div>
+    </div>
+
+    <script>
+        // Check for online status
+        function updateOnlineStatus() {
+            if (navigator.onLine) {
+                window.location.href = '/activity_log_app.html';
+            }
+        }
+
+        // Listen for online event
+        window.addEventListener('online', updateOnlineStatus);
+        
+        // Check periodically
+        setInterval(updateOnlineStatus, 5000);
+    </script>
+</body>
+</html>

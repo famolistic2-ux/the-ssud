@@ -1,0 +1,22 @@
+# Netlify redirects for SUTimeTracker PWA
+
+# Redirect root to main app
+/ /activity_log_app.html 200
+
+# Handle PWA routes
+/app /activity_log_app.html 200
+/timesheet /activity_log_app.html 200
+/tracker /activity_log_app.html 200
+
+# Service worker and manifest
+/service-worker.js /service-worker.js 200
+/manifest.webmanifest /manifest.webmanifest 200
+
+# Icons
+/icons/* /icons/:splat 200
+
+# Offline fallback
+/offline /offline.html 200
+
+# SPA fallback for any other routes
+/* /activity_log_app.html 200

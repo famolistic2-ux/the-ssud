@@ -1,0 +1,199 @@
+/* Print styles for SUTimeTracker */
+
+@media print {
+    /* Reset and base styles */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+
+    /* Hide non-essential elements */
+    .no-print,
+    .mobile-nav,
+    .install-banner,
+    .install-card,
+    .floating-action-button,
+    .keyboard-shortcuts,
+    .ios-install-modal,
+    .loading-overlay,
+    .search-filters,
+    .export-buttons,
+    button:not(.print-button),
+    .glass-morphism,
+    .card-hover,
+    .ripple-effect {
+        display: none !important;
+    }
+
+    /* Header styling */
+    .header {
+        background: white !important;
+        color: black !important;
+        border-bottom: 2px solid #D4AF37 !important;
+        padding: 20px 0 !important;
+        margin-bottom: 20px !important;
+    }
+
+    .header h1 {
+        color: #1A1A2E !important;
+        font-size: 24pt !important;
+        margin: 0 !important;
+    }
+
+    .header .subtitle {
+        color: #666 !important;
+        font-size: 14pt !important;
+        margin-top: 5px !important;
+    }
+
+    /* Dashboard cards */
+    .dashboard-card {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        margin-bottom: 15px !important;
+        padding: 15px !important;
+        page-break-inside: avoid;
+    }
+
+    .dashboard-card h3 {
+        color: #1A1A2E !important;
+        font-size: 16pt !important;
+        margin-bottom: 10px !important;
+        border-bottom: 1px solid #D4AF37 !important;
+        padding-bottom: 5px !important;
+    }
+
+    /* Activity table */
+    .activity-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin-bottom: 20px !important;
+    }
+
+    .activity-table th,
+    .activity-table td {
+        border: 1px solid #ddd !important;
+        padding: 8px !important;
+        text-align: left !important;
+        font-size: 11pt !important;
+    }
+
+    .activity-table th {
+        background: #f8f9fa !important;
+        color: #1A1A2E !important;
+        font-weight: bold !important;
+    }
+
+    .activity-table tr:nth-child(even) {
+        background: #f8f9fa !important;
+    }
+
+    /* Progress indicators */
+    .progress-ring {
+        display: none !important;
+    }
+
+    .progress-text {
+        font-size: 14pt !important;
+        font-weight: bold !important;
+        color: #1A1A2E !important;
+    }
+
+    /* Charts */
+    .chart-container {
+        page-break-inside: avoid;
+        margin: 20px 0 !important;
+    }
+
+    canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Summary stats */
+    .quick-stats {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px !important;
+        margin: 20px 0 !important;
+    }
+
+    .stat-card {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        padding: 15px !important;
+        text-align: center !important;
+    }
+
+    .stat-number {
+        font-size: 20pt !important;
+        font-weight: bold !important;
+        color: #D4AF37 !important;
+    }
+
+    .stat-label {
+        font-size: 11pt !important;
+        color: #666 !important;
+        margin-top: 5px !important;
+    }
+
+    /* Page breaks */
+    .page-break {
+        page-break-before: always !important;
+    }
+
+    /* Footer */
+    .print-footer {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: white !important;
+        border-top: 1px solid #ddd !important;
+        padding: 10px !important;
+        font-size: 10pt !important;
+        color: #666 !important;
+        text-align: center !important;
+    }
+
+    /* Print-specific elements */
+    .print-only {
+        display: block !important;
+    }
+
+    /* Ensure proper spacing */
+    .container {
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Hide scrollbars and interactive elements */
+    ::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    input, textarea, select {
+        border: 1px solid #ddd !important;
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Print button styling */
+    .print-button {
+        background: #D4AF37 !important;
+        color: #1A1A2E !important;
+        border: none !important;
+        padding: 10px 20px !important;
+        font-weight: bold !important;
+        margin: 20px 0 !important;
+    }
+}
