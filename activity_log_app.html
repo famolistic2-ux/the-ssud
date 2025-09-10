@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SUTimeTracker – Student Union timesheet tracking with mobile-first PWA, offline support, exports, and calendar sync.">
     <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#1A1A2E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SUTimeTracker">
+    <meta name="msapplication-TileColor" content="#1A1A2E">
+    <meta name="msapplication-config" content="browserconfig.xml">
     <title>SUTimeTracker - City of Wolverhampton College</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" defer></script>
     <link rel="stylesheet" href="print.css" media="print">
     
     <!-- Error handling and user feedback -->
@@ -56,6 +62,56 @@
         }
         .field-error.show {
             display: block;
+        }
+        
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        .sr-only:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: inherit;
+            margin: inherit;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
+        
+        /* Focus indicators */
+        .focus\:ring-2:focus {
+            outline: 2px solid #D4AF37;
+            outline-offset: 2px;
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .bg-cwc-gold {
+                background-color: #000 !important;
+                color: #fff !important;
+            }
+            .text-cwc-gold {
+                color: #000 !important;
+            }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
     <script>
@@ -357,30 +413,42 @@
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" href="/icons/app-icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png">
+    <link rel="preload" href="/icons/app-icon.svg" as="image" type="image/svg+xml">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#D4AF37">
     <meta name="apple-mobile-web-app-title" content="SUTimeTracker">
 </head>
 <body class="bg-gradient-to-br from-cwc-light to-gray-100 min-h-screen transition-all duration-300">
+    <!-- Skip Navigation for Screen Readers -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-cwc-gold text-cwc-navy px-4 py-2 rounded-lg font-semibold z-50">
+        Skip to main content
+    </a>
+    
     <!-- Header with College Branding -->
-    <header class="bg-gradient-to-r from-cwc-navy to-cwc-dark text-white shadow-lg">
+    <header class="bg-gradient-to-r from-cwc-navy to-cwc-dark text-white shadow-lg" role="banner">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-cwc-gold flex items-center justify-center">
-                        <img src="/icons/app-icon.svg" alt="SUtimetracker" class="w-10 h-10" />
+                    <div class="w-12 h-12 rounded-xl bg-cwc-gold flex items-center justify-center" role="img" aria-label="SUTimeTracker logo">
+                        <img src="/icons/app-icon.svg" alt="SUTimeTracker logo" class="w-10 h-10" loading="eager" />
                     </div>
                     <div>
-                        <h1 class="text-lg sm:text-xl font-bold">SUTimeTracker</h1>
-                        <p class="text-xs sm:text-sm text-cwc-yellow">City of Wolverhampton College</p>
+                        <h1 class="text-lg sm:text-xl font-bold" id="main-title">SUTimeTracker</h1>
+                        <p class="text-xs sm:text-sm text-cwc-yellow" aria-label="Institution name">City of Wolverhampton College</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <button id="helpBtn" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors" title="Keyboard Shortcuts">
-                        <span class="text-cwc-gold">❓</span>
+                    <button id="helpBtn" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors" 
+                            title="Keyboard Shortcuts" aria-label="Show keyboard shortcuts help">
+                        <span class="text-cwc-gold" aria-hidden="true">❓</span>
                     </button>
-                    <button id="darkModeToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors" title="Toggle Dark Mode">
+                    <button id="darkModeToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors" 
+                            title="Toggle Dark Mode" aria-label="Toggle between light and dark mode">
                         <span class="text-cwc-gold">🌙</span>
                     </button>
                     <button id="notificationToggle" class="p-2 rounded-lg bg-cwc-dark hover:bg-opacity-80 transition-colors" title="Toggle Notifications">
@@ -391,14 +459,18 @@
         </div>
     </header>
 
-    <div class="container mx-auto px-3 sm:px-4 py-6 max-w-7xl">
+    <main id="main-content" class="container mx-auto px-3 sm:px-4 py-6 max-w-7xl" role="main" tabindex="-1">
         <!-- Navigation Tabs -->
-        <nav class="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-md p-2 animate-fade-in">
+        <nav class="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-md p-2 animate-fade-in" role="navigation" aria-label="Main navigation">
             <div class="flex flex-wrap gap-2">
-                <button class="nav-tab active bg-cwc-gold text-cwc-navy px-4 py-2 rounded-md font-medium transition-all" data-view="dashboard">Dashboard</button>
-                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" data-view="activities">Activities</button>
-                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" data-view="analytics">Analytics</button>
-                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" data-view="calendar">Calendar</button>
+                <button class="nav-tab active bg-cwc-gold text-cwc-navy px-4 py-2 rounded-md font-medium transition-all" 
+                        data-view="dashboard" aria-label="View dashboard" aria-current="page">Dashboard</button>
+                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" 
+                        data-view="activities" aria-label="View activities">Activities</button>
+                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" 
+                        data-view="analytics" aria-label="View analytics">Analytics</button>
+                <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" 
+                        data-view="calendar" aria-label="View calendar">Calendar</button>
                 <button class="nav-tab bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium transition-all hover:bg-cwc-yellow" data-view="timer">Timer</button>
             </div>
         </nav>
@@ -565,7 +637,8 @@
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search Activities</label>
                             <input type="text" id="activitySearch" placeholder="Search by activity name or notes..." 
-                                   class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors">
+                                   class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors"
+                                   aria-label="Search activities by name or notes" aria-describedby="search-help">
                         </div>
                         <div class="sm:w-48">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter by Type</label>
@@ -579,7 +652,8 @@
                         </div>
                         <div class="sm:w-48">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Date Range</label>
-                            <input type="date" id="dateFilter" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors">
+                            <input type="date" id="dateFilter" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-cwc-gold focus:border-cwc-gold transition-colors"
+                                   aria-label="Filter activities by date">
                         </div>
                         <div class="flex items-end">
                             <button id="clearFilters" class="px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-all transform hover:scale-105">
@@ -1520,6 +1594,7 @@
 
         function addActivityRow() {
             console.log('Adding activity row');
+            trackEvent('activity_row_added');
             const container = document.getElementById('timeLogContainer');
             if (!container) return;
             
@@ -2729,20 +2804,48 @@
             };
         }
 
+        // Performance monitoring
+        function logPerformance() {
+            if ('performance' in window) {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                if (perfData) {
+                    console.log('Performance metrics:', {
+                        domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+                        loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
+                        totalTime: perfData.loadEventEnd - perfData.fetchStart
+                    });
+                }
+            }
+        }
+
+        // Basic analytics (privacy-friendly)
+        function trackEvent(eventName, properties = {}) {
+            console.log('Analytics:', eventName, properties);
+            // Store locally for basic usage tracking
+            const analytics = JSON.parse(localStorage.getItem('sutimetracker_analytics') || '{}');
+            analytics[eventName] = (analytics[eventName] || 0) + 1;
+            analytics.lastActivity = new Date().toISOString();
+            localStorage.setItem('sutimetracker_analytics', JSON.stringify(analytics));
+        }
+
         // Global error handler
         window.addEventListener('error', (event) => {
             console.error('Global error:', event.error);
+            trackEvent('error', { message: event.error?.message });
             showError('An unexpected error occurred. Please try again.');
         });
 
         window.addEventListener('unhandledrejection', (event) => {
             console.error('Unhandled promise rejection:', event.reason);
+            trackEvent('promise_rejection', { reason: event.reason?.message });
             showError('An unexpected error occurred. Please try again.');
         });
 
         // Initialize app when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, initializing app...');
+            trackEvent('app_loaded');
+            logPerformance();
             initializeApp();
             setupEventListeners();
             // Register service worker
