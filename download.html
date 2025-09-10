@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUTimeTracker - Download Files</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        .file-list { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .file-item { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .file-item:last-child { border-bottom: none; }
+        .download-btn { background: #D4AF37; color: #1A1A2E; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold; }
+        .download-btn:hover { background: #B8941F; }
+        h1 { color: #1A1A2E; text-align: center; }
+        .instructions { background: #e8f4fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🚀 SUTimeTracker PWA - Download Files</h1>
+    
+    <div class="instructions">
+        <h3>📋 Instructions:</h3>
+        <ol>
+            <li>Download all files below</li>
+            <li>Create a folder called "SUTimeTracker" on your computer</li>
+            <li>Put all files in that folder</li>
+            <li>Go to <a href="https://netlify.com" target="_blank">netlify.com</a></li>
+            <li>Sign up/login and click "Add new site" → "Deploy manually"</li>
+            <li>Drag your SUTimeTracker folder to Netlify</li>
+            <li>Your app will be live! 🎉</li>
+        </ol>
+    </div>
+
+    <div class="file-list">
+        <h3>📁 Files to Download:</h3>
+        
+        <div class="file-item">
+            <div>
+                <strong>activity_log_app.html</strong><br>
+                <small>Main application file (136KB)</small>
+            </div>
+            <a href="activity_log_app.html" class="download-btn" download>Download</a>
+        </div>
+
+        <div class="file-item">
+            <div>
+                <strong>manifest.webmanifest</strong><br>
+                <small>PWA manifest file</small>
+            </div>
+            <a href="manifest.webmanifest" class="download-btn" download>Download</a>
+        </div>
+
+        <div class="file-item">
+            <div>
+                <strong>service-worker.js</strong><br>
+                <small>Service worker for offline support</small>
+            </div>
+            <a href="service-worker.js" class="download-btn" download>Download</a>
+        </div>
+
+        <div class="file-item">
+            <div>
+                <strong>offline.html</strong><br>
+                <small>Offline fallback page</small>
+            </div>
+            <a href="offline.html" class="download-btn" download>Download</a>
+        </div>
+
+        <div class="file-item">
+            <div>
+                <strong>print.css</strong><br>
+                <small>Print stylesheet</small>
+            </div>
+            <a href="print.css" class="download-btn" download>Download</a>
+        </div>
+
+        <div class="file-item">
+            <div>
+                <strong>_redirects</strong><br>
+                <small>Netlify routing rules</small>
+            </div>
+            <a href="_redirects" class="download-btn" download>Download</a>
+        </div>
+
+        <div class="file-item">
+            <div>
+                <strong>icons/ folder</strong><br>
+                <small>App icons (download each icon separately)</small>
+            </div>
+            <a href="icons/" class="download-btn">View Icons</a>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; color: #666;">
+        <p>💡 <strong>Tip:</strong> Right-click each "Download" button and select "Save link as..." to save files to your computer.</p>
+    </div>
+</body>
+</html>
